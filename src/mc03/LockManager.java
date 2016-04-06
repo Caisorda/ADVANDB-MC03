@@ -1,3 +1,4 @@
+package mc03;
 import java.util.HashMap;
 
 public class LockManager {
@@ -30,4 +31,10 @@ public class LockManager {
 	public int getIsolationLevel(){
 		return this.isolationLevel;
 	}
+	
+//	public void queryLock(String queryType, int[] columns){
+//		switch(this.isolationLevel){
+//			case 1: if(queryType.equalsIgnoreCase("write"))
+//		}
+//	}
 }
