@@ -15,6 +15,10 @@ public class Transaction {
 			return this.queries;
 	}
 	
+	public void setQueries(List<String> queries){
+		this.queries=queries;
+	}
+	
 	public String getName(){
 		return this.name;
 	}

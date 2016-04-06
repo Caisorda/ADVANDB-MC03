@@ -1,17 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mc03.controller.MainController">
    <children>
       <AnchorPane prefHeight="200.0" prefWidth="200.0">
          <children>
-            <Button layoutX="26.0" layoutY="26.0" mnemonicParsing="false" onAction="#HandleQueryButton" text="Button" />
+            <Button layoutX="483.0" layoutY="131.0" mnemonicParsing="false" onAction="#HandleQueryButton" text="Add Transaction" />
+            <Label layoutX="356.0" layoutY="14.0" text="IP Address:" />
+            <Text fx:id="ipAddress" layoutX="430.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="88.0" />
+            <Button layoutX="14.0" layoutY="19.0" mnemonicParsing="false" text="Execute!" />
+            <Text layoutX="51.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ready?" />
+            <Text layoutX="50.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Commit?" />
+            <TextField fx:id="transactionField" layoutX="325.0" layoutY="131.0" />
+            <Label layoutX="205.0" layoutY="135.0" text="Enter Transaction ID:" />
          </children>
       </AnchorPane>
-      <ListView prefHeight="261.0" prefWidth="600.0" />
+      <ListView fx:id="transactionsList" prefHeight="261.0" prefWidth="600.0" />
    </children>
 </VBox>
