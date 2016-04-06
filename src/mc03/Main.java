@@ -25,7 +25,7 @@ public void start(Stage primaryStage) throws Exception{
 	root=loader.load();
 	
 	Scene scene = new Scene(root);
-primaryStage.setTitle("Non Restoring Division");
+primaryStage.setTitle("MC03");
 primaryStage.setScene(scene);
 primaryStage.setResizable(false);
 primaryStage.show();	             
