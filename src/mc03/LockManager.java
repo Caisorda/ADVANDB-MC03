@@ -17,7 +17,7 @@ public class LockManager {
 		}
 	}
 	
-	public LockManager getInstance(){
+	public static LockManager getInstance(){
 		if (instance == null) {
             instance = new LockManager();
         }
@@ -30,6 +30,14 @@ public class LockManager {
 	
 	public int getIsolationLevel(){
 		return this.isolationLevel;
+	}
+	
+	public void readLock(int column, String transID){
+		locks.get(column).readLock(transID);
+	}
+	
+	public void writeLock(int column, String transID){
+		locks.get(column).writeLock(transID);
 	}
 	
 //	public void queryLock(String queryType, int[] columns){
