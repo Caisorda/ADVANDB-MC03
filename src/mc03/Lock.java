@@ -5,9 +5,11 @@ public class Lock {
 	private boolean isWriting;
 	private int numReaders;
 	private ArrayList<String> transactions;
+	private LockManager manager;
 	
 	public Lock(){
 		this.transactions = new ArrayList();
+		manager = manager.getInstance();
 	}
 	
 	public synchronized void writeLock(String transID){
@@ -22,7 +24,7 @@ public class Lock {
 		transactions.add(transID);
 	}
 	
-	public synchronized void readLock(){
+	public synchronized void readLock(String transID){
 		while(isWriting){
 			try {
 				wait();
@@ -31,6 +33,7 @@ public class Lock {
 			}
 		}
 		numReaders++;
+		transactions.remove(transID);
 	}
 	
 	public synchronized void unlock(String transID){
@@ -47,4 +50,6 @@ public class Lock {
 			transactions.remove(transID);
 		}
 	}
+	
+	
 }
