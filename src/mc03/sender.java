@@ -78,7 +78,7 @@ public class sender {
         try {
   
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sys", "root", "DLSU");
+            Connection con = con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_hpq", "root", "DLSU");
             Statement stmt = con.createStatement();
 
             long startTime = System.currentTimeMillis();
@@ -102,7 +102,7 @@ public class sender {
     ArrayList<String> arrayList = new ArrayList<String>(); 
 while (rs.next()) {              
         int i = 1;
-        while(i < columns) {
+        while(i <= columns) {
             arrayList.add(rs.getString(i++));
         }
 //        System.out.println(rs.getString(1));
