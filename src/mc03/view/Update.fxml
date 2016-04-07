@@ -2,24 +2,26 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane prefHeight="300.0" prefWidth="300.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.65">
+<AnchorPane prefHeight="300.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mc03.controller.UpdateController">
    <children>
-      <Button layoutX="170.0" layoutY="254.0" mnemonicParsing="false" text="Add Update Query" />
+      <Button fx:id="updateQueryButton" layoutX="170.0" layoutY="254.0" mnemonicParsing="false" onAction="#handleUpdate" text="Add Update Query" />
       <Label layoutX="14.0" layoutY="25.0" text="totin?" />
       <Label layoutX="14.0" layoutY="64.0" text="nalp" />
       <Label layoutX="14.0" layoutY="104.0" text="irfa_crop" />
       <Label layoutX="14.0" layoutY="142.0" text="crop_vol" />
-      <TextField layoutX="79.0" layoutY="21.0" />
-      <TextField layoutX="79.0" layoutY="60.0" />
-      <TextField layoutX="79.0" layoutY="100.0" />
-      <TextField layoutX="79.0" layoutY="138.0" />
+      <TextField fx:id="totinTextField" layoutX="79.0" layoutY="21.0" />
+      <TextField fx:id="nalpTextField" layoutX="79.0" layoutY="60.0" />
+      <TextField fx:id="ifraTextField" layoutX="79.0" layoutY="100.0" />
+      <TextField fx:id="crop_volTextField" layoutX="79.0" layoutY="138.0" />
       <Label layoutX="9.0" layoutY="189.0" text="hpq_hh_id" />
       <Label layoutX="22.0" layoutY="220.0" text="hh_id" />
-      <TextField layoutX="76.0" layoutY="185.0" />
-      <TextField layoutX="76.0" layoutY="216.0" />
+      <TextField fx:id="hpq_hh_id_textField" layoutX="76.0" layoutY="185.0" />
+      <TextField fx:id="hh_id_textField" layoutX="76.0" layoutY="216.0" />
+      <RadioButton layoutX="245.0" layoutY="189.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="31.0" />
+      <RadioButton layoutX="245.0" layoutY="220.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="37.0" />
    </children>
 </AnchorPane>

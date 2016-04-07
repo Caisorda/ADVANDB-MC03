@@ -6,17 +6,17 @@ import java.util.List;
 
 public class Transaction {
 	
-	List<String> queries = new ArrayList<>();
+	String query;
 	String name;
 	int id;
 	
 	
-	public List<String> getQueries(){
-			return this.queries;
+	public String getQueries(){
+			return this.query;
 	}
 	
-	public void setQueries(List<String> queries){
-		this.queries=queries;
+	public void setQuery(String query){
+		this.query=query;
 	}
 	
 	public String getName(){

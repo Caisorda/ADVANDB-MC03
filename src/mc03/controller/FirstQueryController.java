@@ -124,7 +124,7 @@ stage.close();
 				 "group by hh."+selected;
 
 	 }
-	 else if(str == "Total Income of Households"){
+	 else if(str =="total income of households that have Insurance"){
 		 System.out.println("query is relted to total income per households.");
 		 
 		 query = "select hh."+selected+", sum(totin) as income"+

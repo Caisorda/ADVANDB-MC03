@@ -2,7 +2,7 @@ package mc03;
 
 import java.util.HashMap;
 
-import model.DBConnection;
+import mc03.model.DBConnection;
 
 public class QueryHandler {
 	private HashMap<String, DBConnection> transactions;

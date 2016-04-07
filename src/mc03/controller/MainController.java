@@ -32,7 +32,7 @@ public class MainController {
 	ipAddress.setText(temp);
 	
 	}
-	public void addTransaction(List<String> queries){
+	public void addTransaction(String query){
 		String temp = null;
 		Exception e = null;
 		try{
@@ -45,7 +45,7 @@ public class MainController {
 		}
 		 Transaction tran = new Transaction();
 		 tran.setName(temp);
-		 tran.setQueries(queries);
+		 tran.setQuery(query);
 		 transactions.add(tran);
 		this.transactionsList.getItems().addAll("Transaction; id:"+temp);
 		

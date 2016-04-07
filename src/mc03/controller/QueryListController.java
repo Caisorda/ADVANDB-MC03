@@ -46,8 +46,20 @@ public class QueryListController implements Initializable {
 		 
 	 }
 	 
-	 public void handleUpdateButton(){
-		 
+	 public void handleUpdateButton() throws IOException{
+		 FXMLLoader loader = new FXMLLoader(getClass()
+					.getResource("view/Update.fxml"));
+			
+
+			loader.setLocation(Main.class.getResource("view/Update.fxml"));
+			Parent root = loader.load();
+			UpdateController controller =
+					loader.<UpdateController>getController();
+			controller.initialize(this);  
+			Stage stage = new Stage();
+			stage.setScene(new Scene(root));
+			stage.setTitle("Update");
+			stage.show();
 	 }
 	 @Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -67,7 +79,8 @@ public class QueryListController implements Initializable {
 	}
 	public void handleListQueries(){
 		
-		mc.addTransaction(queryList);
+		mc.addTransaction(queryList.get(0));
+		System.out.println("added to transaction: "+queryList.get(0));
 		Stage stage = (Stage) listQueries.getScene().getWindow();
 		stage.close();
 	}
