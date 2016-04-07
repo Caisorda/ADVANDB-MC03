@@ -39,7 +39,7 @@ public class sender {
 
     
     
-    public void send(String patatas) throws SocketException {
+    public void send(String patatas){
         try {
             char x = 0;
             byte[] sendData = new byte[1024];
@@ -48,7 +48,7 @@ public class sender {
             
             DatagramSocket clientSocket = new DatagramSocket();
             String address = "localhost";
-            //address="10.100.210.64";
+           //address="10.100.217.172";
             InetAddress IPAddress = InetAddress.getByName(address);
 
             String sentence = patatas;
@@ -100,7 +100,7 @@ public class sender {
             
            //storing it 
     ArrayList<String> arrayList = new ArrayList<String>(); 
-while (rs.next()) {              
+    while (rs.next()) {              
         int i = 1;
         while(i <= columns) {
             arrayList.add(rs.getString(i++));
@@ -140,7 +140,6 @@ while (rs.next()) {
             clientSocket = new DatagramSocket();
          
             String address = "localhost";
-            address="10.100.221.23";
             InetAddress IPAddress = InetAddress.getByName(address);
             
             byte[] sendData = new byte[1024];
@@ -179,6 +178,32 @@ while (rs.next()) {
         
         
     }
+public String resultData(String query){
+	
+	String qData="";
+	try{
+
+    Class.forName("com.mysql.jdbc.Driver");
+    Connection con = con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_hpq", "root", "DLSU");
+    Statement stmt = con.createStatement();
+    long startTime = System.currentTimeMillis();
+    ResultSet rs = stmt.executeQuery(query);
+    ResultSetMetaData rsmetadata = rs.getMetaData();
+    int columns = rsmetadata.getColumnCount();
+
+    qData=""+ columns+" ~ ";
+
+    for (int i = 1; i < columns + 1; i++) {
+        qData=qData+rsmetadata.getColumnName(i)+" : ";
+    }
+
+	}catch (Exception ex) {
+        System.out.println("Error:5555 " + ex);
+        ex.printStackTrace();
+    }
+	return qData;
+}
+    
     
     
     
