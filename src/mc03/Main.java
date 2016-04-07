@@ -19,7 +19,9 @@ public class Main extends Application{
     private Stage primaryStage;
     private AnchorPane root;
     final private ExecutorService executorService = Executors.newSingleThreadExecutor();
-	
+	        
+Thread catcher = new Thread(new reciever(9876, 1024, 1024));
+
 public void start(Stage primaryStage) throws Exception{
 	this.primaryStage= primaryStage;
 	try{
@@ -34,9 +36,10 @@ public void start(Stage primaryStage) throws Exception{
 primaryStage.setTitle("LOGIN");
 primaryStage.setScene(scene);
 primaryStage.setResizable(false);
-primaryStage.show();	             
-reciever r = new reciever(9876,1024,1024);
-executorService.execute(r);
+primaryStage.show();	
+
+sender man = new sender();
+catcher.start();
 
 }
 	catch(IOException e){

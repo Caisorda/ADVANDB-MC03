@@ -15,6 +15,8 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import mc03.model.Container;
+
 /**
  *
  * @author miguel
@@ -24,11 +26,11 @@ public class reciever implements Runnable {
 	DatagramSocket serverSocket;
 	byte[] receiveData = new byte[1024];
 	byte[] sendData = new byte[1024];
-	public int type = 0;
-	RequestHandler requestHandler;
+	public int type = 1;
+	NodeRequestHandler requestHandler;
 
 	public reciever(int portnumber, int recieverbuffersize, int sentDatasize) {
-
+			requestHandler = new NodeRequestHandler("Marindique");
 		try {
 			serverSocket = new DatagramSocket(portnumber);
 		} catch (SocketException ex) {

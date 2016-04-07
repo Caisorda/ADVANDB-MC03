@@ -42,7 +42,10 @@ public class LoginController implements Initializable {
     Text secondText;
     @FXML
     Text ipAddress;
-
+    
+    @FXML 	
+    Button exceuteServer;
+    
     private boolean checker;
     private String siteLocationName;
 
@@ -57,7 +60,7 @@ public class LoginController implements Initializable {
             e.printStackTrace();
         }
         
-        
+   
         
         chosenSite.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
 		    public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
@@ -78,6 +81,9 @@ public class LoginController implements Initializable {
 		});
     }
 
+    public void handleExecuteServer(){
+  	  
+    }
     public void HandleConnect() throws IOException { 
     	if (chosenSite.getSelectedToggle() ==  null) {
 			             SoftwareNotification.notifyError("Please select server first.");

@@ -140,7 +140,7 @@ while (rs.next()) {
             clientSocket = new DatagramSocket();
          
             String address = "localhost";
-            //address="10.100.210.64";
+            address="10.100.221.23";
             InetAddress IPAddress = InetAddress.getByName(address);
             
             byte[] sendData = new byte[1024];
