@@ -26,8 +26,8 @@ public class reciever implements Runnable {
 	DatagramSocket serverSocket;
 	byte[] receiveData = new byte[1024];
 	byte[] sendData = new byte[1024];
-	public int type = 0;
-	NodeRequestHandler requestHandler;
+	public int type = 1;
+	RequestHandler requestHandler;
 
 	public reciever(int portnumber, int recieverbuffersize, int sentDatasize) {
 			requestHandler = new NodeRequestHandler("Marindique");
@@ -79,6 +79,8 @@ public class reciever implements Runnable {
 				String sentence = "";
 				byte[] receiveData = new byte[1024];
 				DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+
+				//serverSocket.setSoTimeout(5000);
 				System.out.println("OPEN to type:"+this.type);
 				serverSocket.receive(receivePacket);
 
@@ -90,16 +92,21 @@ public class reciever implements Runnable {
 					System.out.println("request___" + this.getrequest(sentence.trim()));
 					System.out.println("messag____" + this.getname(sentence.trim()));
 					if (this.getrequest(sentence.trim()).equals("DATA")) {
+						//DOM: this.getname(sentence.trim()) would give you the column number and name
+						}
+					if (this.getrequest(sentence.trim()).equals("AGREE")) {	
+						//setting the thing to receive the result set
 						this.type = 0;
-					}else{
-						requestHandler.interpret(sentence);
 					}
+						
+						
+					
+					
+					
+					//requestHandler.interpret(sentence);
 
-					// gui.setIpAddress(receivePacket.getAddress().toString().substring(1));
-					// gui.listenButton.setText("reply");
-					// gui.handler.client.setadress(receivePacket.getAddress().toString().substring(1));
-					// rhandler.request(sentence.trim(),receivePacket.getAddress().toString().substring(1));
-					// System.out.println(rhandler);
+					
+					
 				} else if (this.type == 0) {
 
 					System.out.println("RECEIVED: FROM" + receivePacket.getAddress());
@@ -120,8 +127,12 @@ public class reciever implements Runnable {
 						
 						//insert arraylist here.
 						System.out.println("TTTT:" + element);
-						
 					}
+					
+					
+					
+					
+					
 					try{
 						String handle[] = sentence.split("~");
 						this.type = 1;
