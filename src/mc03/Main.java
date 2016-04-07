@@ -37,15 +37,11 @@ public void start(Stage primaryStage) throws Exception{
 primaryStage.setTitle("LOGIN");
 primaryStage.setScene(scene);
 primaryStage.setResizable(false);
-<<<<<<< HEAD
 primaryStage.show();
-		Client.getInstance();
-=======
 primaryStage.show();	             
 
 
-CommunicationHandler comhandler = new CommunicationHandler();
->>>>>>> origin/master
+//CommunicationHandler comhandler = new CommunicationHandler();
 
 //sender man = new sender();
 //catcher.start();
