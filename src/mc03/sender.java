@@ -140,7 +140,6 @@ public class sender {
             clientSocket = new DatagramSocket();
          
             String address = "localhost";
-            //address="10.100.217.172";
             InetAddress IPAddress = InetAddress.getByName(address);
             
             byte[] sendData = new byte[1024];

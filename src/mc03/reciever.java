@@ -15,6 +15,8 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import mc03.model.Container;
+
 /**
  *
  * @author miguel
@@ -28,7 +30,7 @@ public class reciever implements Runnable {
 	RequestHandler requestHandler;
 
 	public reciever(int portnumber, int recieverbuffersize, int sentDatasize) {
-
+			requestHandler = new NodeRequestHandler("Marindique");
 		try {
 			serverSocket = new DatagramSocket(portnumber);
 		} catch (SocketException ex) {
@@ -77,8 +79,9 @@ public class reciever implements Runnable {
 				String sentence = "";
 				byte[] receiveData = new byte[1024];
 				DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-				System.out.println("OPEN");
+
 				//serverSocket.setSoTimeout(5000);
+				System.out.println("OPEN to type:"+this.type);
 				serverSocket.receive(receivePacket);
 
 				if (this.type == 1) {
@@ -121,9 +124,9 @@ public class reciever implements Runnable {
 
 					while (in.available() > 0) {
 						String element = in.readUTF();
-
+						
+						//insert arraylist here.
 						System.out.println("TTTT:" + element);
-
 					}
 					
 					
