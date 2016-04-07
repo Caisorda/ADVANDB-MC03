@@ -26,7 +26,7 @@ public class reciever implements Runnable {
 	DatagramSocket serverSocket;
 	byte[] receiveData = new byte[1024];
 	byte[] sendData = new byte[1024];
-	public int type = 1;
+	public int type = 0;
 	NodeRequestHandler requestHandler;
 
 	public reciever(int portnumber, int recieverbuffersize, int sentDatasize) {
@@ -79,7 +79,7 @@ public class reciever implements Runnable {
 				String sentence = "";
 				byte[] receiveData = new byte[1024];
 				DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-				System.out.println("OPEN");
+				System.out.println("OPEN to type:"+this.type);
 				serverSocket.receive(receivePacket);
 
 				if (this.type == 1) {
@@ -117,13 +117,16 @@ public class reciever implements Runnable {
 
 					while (in.available() > 0) {
 						String element = in.readUTF();
+						
+						//insert arraylist here.
 						System.out.println("TTTT:" + element);
+						
 					}
 					try{
 						String handle[] = sentence.split("~");
 						this.type = 1;
-						requestHandler.interpret("DATA FINISH~" + handle[1] + "~" + handle[2] 
-												+ "~" + handle[3]);
+						//requestHandler.interpret("DATA FINISH~" + handle[1] + "~" + handle[2] 
+							//					+ "~" + handle[3]);
 					}catch(Exception e){
 						e.printStackTrace();
 					}
