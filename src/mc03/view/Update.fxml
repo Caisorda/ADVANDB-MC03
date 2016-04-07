@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane prefHeight="300.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mc03.controller.UpdateController">
@@ -21,7 +22,11 @@
       <Label layoutX="22.0" layoutY="220.0" text="hh_id" />
       <TextField fx:id="hpq_hh_id_textField" layoutX="76.0" layoutY="185.0" />
       <TextField fx:id="hh_id_textField" layoutX="76.0" layoutY="216.0" />
-      <RadioButton layoutX="245.0" layoutY="189.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="31.0" />
-      <RadioButton layoutX="245.0" layoutY="220.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="37.0" />
+      <RadioButton fx:id="hpq_hh_id_radioButton" layoutX="245.0" layoutY="189.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="31.0">
+         <toggleGroup>
+            <ToggleGroup fx:id="group" />
+         </toggleGroup>
+      </RadioButton>
+      <RadioButton fx:id="hh_id_radioButton" layoutX="245.0" layoutY="220.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="37.0" toggleGroup="$group" />
    </children>
 </AnchorPane>
