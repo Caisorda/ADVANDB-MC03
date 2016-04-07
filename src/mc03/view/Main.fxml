@@ -3,23 +3,44 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mc03.controller.MainController">
    <children>
       <AnchorPane prefHeight="200.0" prefWidth="200.0">
          <children>
-            <Button layoutX="483.0" layoutY="131.0" mnemonicParsing="false" onAction="#HandleQueryButton" text="Add Transaction" />
-            <Label layoutX="356.0" layoutY="14.0" text="IP Address:" />
+            <Button layoutX="483.0" layoutY="86.0" mnemonicParsing="false" onAction="#HandleQueryButton" text="Add Transaction" />
+            <Label layoutX="360.0" layoutY="22.0" text="IP Address:" />
             <Text fx:id="ipAddress" layoutX="430.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="88.0" />
-            <Button layoutX="14.0" layoutY="19.0" mnemonicParsing="false" text="Execute!" />
-            <Text layoutX="51.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ready?" />
-            <Text layoutX="50.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Commit?" />
-            <TextField fx:id="transactionField" layoutX="325.0" layoutY="131.0" />
-            <Label layoutX="205.0" layoutY="135.0" text="Enter Transaction ID:" />
+            <Button layoutX="518.0" layoutY="121.0" mnemonicParsing="false" text="Execute!" />
+            <Text layoutX="381.0" layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ready?" />
+            <Text layoutX="450.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Commit?" />
+            <TextField fx:id="transactionField" layoutX="325.0" layoutY="86.0" />
+            <Label layoutX="206.0" layoutY="90.0" text="Enter Transaction ID:" />
+            <RadioButton fx:id="readUncommitedRButton" layoutX="5.0" layoutY="45.0" mnemonicParsing="false" text="Read Uncommited">
+               <toggleGroup>
+                  <ToggleGroup fx:id="isolationLevel" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="readCommitedRButon" layoutX="5.0" layoutY="70.0" mnemonicParsing="false" text="Read Commited" toggleGroup="$isolationLevel" />
+            <RadioButton fx:id="repeatableReadRBUtton" layoutX="8.0" layoutY="99.0" mnemonicParsing="false" text="Repeatable Read " toggleGroup="$isolationLevel" />
+            <RadioButton fx:id="serializableRButton" layoutX="8.0" layoutY="125.0" mnemonicParsing="false" text="Serializable" toggleGroup="$isolationLevel" />
+            <Label layoutX="11.0" layoutY="22.0" text="Isolation Level" />
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="70.0" prefWidth="600.0" style="-fx-background-color: darkgreen;">
+         <children>
+            <Label layoutX="249.0" layoutY="5.0" text="List of Transactions" textFill="WHITE">
+               <font>
+                  <Font name="Arial Bold" size="12.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
       <ListView fx:id="transactionsList" prefHeight="261.0" prefWidth="600.0" />

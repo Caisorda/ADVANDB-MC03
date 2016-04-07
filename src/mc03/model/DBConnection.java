@@ -29,7 +29,8 @@ public class DBConnection {
 		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			return DriverManager.getConnection(instance.getUrl() + schema + instance.getDatabase(), instance.getUsername(),
+			System.out.println("DBConnection.java: Location name is: " + Container.getInstance().getDatabaseName());
+			return DriverManager.getConnection(instance.getUrl() + schema + Container.getInstance().getDatabaseName(), instance.getUsername(),
 					instance.getPassword());
 		} catch (Exception e) {
 			System.out.println("Couldnt connect");

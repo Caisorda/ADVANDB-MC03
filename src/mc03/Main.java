@@ -1,6 +1,9 @@
 package mc03;
 
 import java.io.IOException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -15,6 +18,7 @@ import mc03.controller.MainController;
 public class Main extends Application{
     private Stage primaryStage;
     private AnchorPane root;
+    final private ExecutorService executorService = Executors.newSingleThreadExecutor();
 	
 public void start(Stage primaryStage) throws Exception{
 	this.primaryStage= primaryStage;
@@ -31,7 +35,8 @@ primaryStage.setTitle("LOGIN");
 primaryStage.setScene(scene);
 primaryStage.setResizable(false);
 primaryStage.show();	             
-
+reciever r = new reciever(9876,1024,1024);
+executorService.execute(r);
 
 }
 	catch(IOException e){

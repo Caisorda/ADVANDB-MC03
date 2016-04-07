@@ -17,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import mc03.Main;
+import mc03.view.SoftwareNotification;
 
 public class QueryListController implements Initializable {
 	 @FXML private ListView<String> queryListView;
@@ -78,9 +79,13 @@ public class QueryListController implements Initializable {
 		queryList.add(str);
 	}
 	public void handleListQueries(){
-		
+		try{
 		mc.addTransaction(queryList.get(0));
-		System.out.println("added to transaction: "+queryList.get(0));
+		System.out.println("added to transaction: "+queryList.get(0));}
+		catch(IndexOutOfBoundsException e){
+			SoftwareNotification.notifyError("please select query."); 
+			System.out.println("error sa add transaction pre.");
+		}
 		Stage stage = (Stage) listQueries.getScene().getWindow();
 		stage.close();
 	}

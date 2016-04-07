@@ -13,7 +13,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -26,6 +28,13 @@ public class MainController {
 	 private List<Transaction> transactions;
 	 @FXML TextField transactionField;
 	 @FXML Text 	 ipAddress;
+	 
+	 @FXML RadioButton readUncommitedRButton;
+	 @FXML RadioButton readCommitedRButon;
+	 @FXML RadioButton repeatableReadRBUtton;
+	 @FXML RadioButton serializableRButton;
+	 
+	 @FXML ToggleGroup isolationLevel;
 	public void initializeVariables() throws UnknownHostException{
 	transactions = new ArrayList();
 	String temp =""+ InetAddress.getLocalHost();

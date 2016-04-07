@@ -78,7 +78,7 @@ public class sender {
         try {
   
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sys", "root", "1234");
+            Connection con = con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sys", "root", "DLSU");
             Statement stmt = con.createStatement();
 
             long startTime = System.currentTimeMillis();

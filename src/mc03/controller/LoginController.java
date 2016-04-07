@@ -6,6 +6,8 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ResourceBundle;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -14,10 +16,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import mc03.Main;
+import mc03.model.Container;
+import mc03.view.SoftwareNotification;
 
 public class LoginController implements Initializable {
 
@@ -38,6 +43,7 @@ public class LoginController implements Initializable {
     @FXML
     Text ipAddress;
 
+    private boolean checker;
     private String siteLocationName;
 
     @Override
@@ -50,16 +56,39 @@ public class LoginController implements Initializable {
             System.out.println("initialize() @ LoginController.java: An UnknownHostException occurred.");
             e.printStackTrace();
         }
+        
+        
+        
+        chosenSite.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
+		    public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
+		    	
+		    	   if (chosenSite.getSelectedToggle() ==  radioCentral) {
+		    		   siteLocationName = radioCentral.getText();
+			         }
+		    	   else if(chosenSite.getSelectedToggle() ==  radioMarinduque) {
+		    		   siteLocationName = radioMarinduque.getText();
+			             
+			         }
+		    	   else if(chosenSite.getSelectedToggle() ==  radioPalawan) {
+		    		   siteLocationName = radioPalawan.getText();
+			             
+			         }
+		    	  
+		     } 
+		});
     }
 
-    public void HandleConnect() throws IOException {
-        if (radioCentral.isSelected()) {
-            siteLocationName = radioCentral.getText();
-        } else if (radioMarinduque.isSelected()) {
-            siteLocationName = radioMarinduque.getText();
-        } else if (radioPalawan.isSelected()) {
-            siteLocationName = radioPalawan.getText();
-        }
+    public void HandleConnect() throws IOException { 
+    	if (chosenSite.getSelectedToggle() ==  null) {
+			             SoftwareNotification.notifyError("Please select server first.");
+			         }else{
+//        if (radioCentral.isSelected()) {
+//            siteLocationName = radioCentral.getText();
+//        } else if (radioMarinduque.isSelected()) {
+//            siteLocationName = radioMarinduque.getText();
+//        } else if (radioPalawan.isSelected()) {
+//            siteLocationName = radioPalawan.getText();
+//        }
         System.out.println("HandleConnect() @ LoginController.java: User is logging in as: " + siteLocationName);
         // And then you can use siteLocationName to wherever you need it.
 
@@ -77,9 +106,13 @@ public class LoginController implements Initializable {
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
         stage.setTitle("ADVANDB MC03");
-        stage.show();
+        stage.show(); 
+        SoftwareNotification.notifySuccess("IP Address: "+ipAddress.getText());
+        SoftwareNotification.notifySuccess("Logged in as: "+siteLocationName+
+        		" IP Address: "+ipAddress.getText());
+        Container.getInstance().setLocationName(siteLocationName);
+			         }
     }
-
     /*
     * Description: Updates the UI with active connections with other machines.
     * Sample output: "1) Marinduque @ 192.168.1.101" or "2) Palawan @ 192.168.1.102"
