@@ -35,8 +35,9 @@ primaryStage.setTitle("LOGIN");
 primaryStage.setScene(scene);
 primaryStage.setResizable(false);
 primaryStage.show();	             
-reciever r = new reciever(9876,1024,1024);
-executorService.execute(r);
+
+
+CommunicationHandler comhandler = new CommunicationHandler();
 
 }
 	catch(IOException e){
