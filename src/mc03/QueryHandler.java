@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
+import mc03.model.Container;
 import mc03.model.DBConnection;
 
 
@@ -20,7 +21,7 @@ public class QueryHandler {
 	private static QueryHandler instance;
 	
 	private QueryHandler(){
-		transactions = new HashMap();
+		transactions = new HashMap<>();
 	}
 
 	public synchronized void setIsolationLevel(int level, String transID){
@@ -50,7 +51,6 @@ public class QueryHandler {
 		try {
 			transaction.setAutoCommit(false);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		transactions.put(transID, transaction);
@@ -67,7 +67,7 @@ public class QueryHandler {
 	}
 	
 	public ResultSet readQuery(String transID, String query){
-		Connection con = transactions.get(transID);
+		Connection con = DBConnection.getConnection(Container.getInstance().getDatabaseName()); // DAVID: I CHANGED THIS BTW
 		ResultSet results = null;
 		try {
 			PreparedStatement prepped = con.prepareStatement(query);
