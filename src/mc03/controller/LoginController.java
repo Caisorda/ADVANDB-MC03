@@ -38,6 +38,8 @@ public class LoginController implements Initializable {
     @FXML
     Text ipAddress;
 
+    private String siteLocationName;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -51,7 +53,6 @@ public class LoginController implements Initializable {
     }
 
     public void HandleConnect() throws IOException {
-        String siteLocationName = "";
         if (radioCentral.isSelected()) {
             siteLocationName = radioCentral.getText();
         } else if (radioMarinduque.isSelected()) {
@@ -79,6 +80,28 @@ public class LoginController implements Initializable {
         stage.show();
     }
 
+    /*
+    * Description: Updates the UI with active connections with other machines.
+    * Sample output: "1) Marinduque @ 192.168.1.101" or "2) Palawan @ 192.168.1.102"
+    * Parameters:
+    *   connectionNumber - can only be either 1 or 2 para sa '1)' and '2)' in the UI
+    *   siteLocationName - if connection is from Central, Marinduque, or Palawan
+    *   ipAddress - the IP address of the other site
+    * */
+    public void updateConnectionList(int connectionNumber, String siteLocationName, String ipAddress) {
+        String str = "";
+        if (connectionNumber == 1) {
+            str += "1) " + siteLocationName + " @ " + ipAddress;
+            firstText.setText(str);
+        } else if (connectionNumber == 2) {
+            str += "2) " + siteLocationName + " @ " + ipAddress;
+            secondText.setText(str);
+        }
+    }
 
+    // Returns 'Central', 'Marinduque', or 'Palawan' without quotes.
+    public String getSiteLocationName() {
+        return siteLocationName;
+    }
 
 }
