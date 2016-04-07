@@ -23,7 +23,7 @@ public class QueryHandler {
 		transactions = new HashMap();
 	}
 
-	public void setIsolationLevel(int level, String transID){
+	public synchronized void setIsolationLevel(int level, String transID){
 		this.isolationLevel = level;
 		Connection conn = transactions.get(transID);
 		try {
@@ -45,7 +45,7 @@ public class QueryHandler {
         return instance;
 	}
 	
-	public void addTransaction(String transID, String schema){
+	public synchronized void addTransaction(String transID, String schema){
 		Connection transaction = DBConnection.getConnection(schema);
 		try {
 			transaction.setAutoCommit(false);
@@ -56,7 +56,7 @@ public class QueryHandler {
 		transactions.put(transID, transaction);
 	}
 	
-	public void writeQuery(String transID, String query){
+	public synchronized void writeQuery(String transID, String query){
 		Connection con = transactions.get(transID);
 		try {
 			PreparedStatement prepped = con.prepareStatement(query);
@@ -78,7 +78,7 @@ public class QueryHandler {
 		return results;
 	}
 	
-	public void commitTransaction(String transID){
+	public synchronized void commitTransaction(String transID){
 		Connection con = transactions.get(transID);
 		try {
 			con.commit();
@@ -88,7 +88,7 @@ public class QueryHandler {
 		transactions.remove(transID);
 	}
 	
-	public void abortTransaction(String transID){
+	public synchronized void abortTransaction(String transID){
 		Connection con = transactions.get(transID);
 		try {
 			con.close();
