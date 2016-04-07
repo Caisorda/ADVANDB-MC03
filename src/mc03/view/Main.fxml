@@ -11,16 +11,17 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mc03.controller.MainController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mc03.controller.MainController">
    <children>
       <AnchorPane prefHeight="200.0" prefWidth="200.0">
          <children>
             <Button layoutX="483.0" layoutY="86.0" mnemonicParsing="false" onAction="#HandleQueryButton" text="Add Transaction" />
             <Label layoutX="360.0" layoutY="22.0" text="IP Address:" />
             <Text fx:id="ipAddress" layoutX="430.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="88.0" />
-            <Button layoutX="518.0" layoutY="121.0" mnemonicParsing="false" text="Execute!" />
-            <Text layoutX="381.0" layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ready?" />
-            <Text layoutX="450.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Commit?" />
+            <Button layoutX="474.0" layoutY="121.0" mnemonicParsing="false" text="Execute Globally" onAction="#handleGlobalExecution"/>
+            <Button layoutX="352.0" layoutY="121.0" mnemonicParsing="false" text="Execute Locally" onAction="#handleLocalExecution"/>
+            <Text layoutX="206.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ready?" />
+            <Text layoutX="252.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Commit?" />
             <TextField fx:id="transactionField" layoutX="325.0" layoutY="86.0" />
             <Label layoutX="206.0" layoutY="90.0" text="Enter Transaction ID:" />
             <RadioButton fx:id="readUncommitedRButton" layoutX="5.0" layoutY="45.0" mnemonicParsing="false" text="Read Uncommited">

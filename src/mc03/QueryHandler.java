@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
+import mc03.model.Container;
 import mc03.model.DBConnection;
 
 
@@ -20,10 +21,10 @@ public class QueryHandler {
 	private static QueryHandler instance;
 	
 	private QueryHandler(){
-		transactions = new HashMap();
+		transactions = new HashMap<>();
 	}
 
-	public void setIsolationLevel(int level, String transID){
+	public synchronized void setIsolationLevel(int level, String transID){
 		this.isolationLevel = level;
 		Connection conn = transactions.get(transID);
 		try {
@@ -45,18 +46,17 @@ public class QueryHandler {
         return instance;
 	}
 	
-	public void addTransaction(String transID, String schema){
+	public synchronized void addTransaction(String transID, String schema){
 		Connection transaction = DBConnection.getConnection(schema);
 		try {
 			transaction.setAutoCommit(false);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		transactions.put(transID, transaction);
 	}
 	
-	public void writeQuery(String transID, String query){
+	public synchronized void writeQuery(String transID, String query){
 		Connection con = transactions.get(transID);
 		try {
 			PreparedStatement prepped = con.prepareStatement(query);
@@ -67,7 +67,7 @@ public class QueryHandler {
 	}
 	
 	public ResultSet readQuery(String transID, String query){
-		Connection con = transactions.get(transID);
+		Connection con = DBConnection.getConnection(Container.getInstance().getDatabaseName()); // DAVID: I CHANGED THIS BTW
 		ResultSet results = null;
 		try {
 			PreparedStatement prepped = con.prepareStatement(query);
@@ -78,7 +78,7 @@ public class QueryHandler {
 		return results;
 	}
 	
-	public void commitTransaction(String transID){
+	public synchronized void commitTransaction(String transID){
 		Connection con = transactions.get(transID);
 		try {
 			con.commit();
@@ -88,7 +88,7 @@ public class QueryHandler {
 		transactions.remove(transID);
 	}
 	
-	public void abortTransaction(String transID){
+	public synchronized void abortTransaction(String transID){
 		Connection con = transactions.get(transID);
 		try {
 			con.close();

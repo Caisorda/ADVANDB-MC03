@@ -27,13 +27,13 @@ public class NodeRequestHandler implements RequestHandler{
 					manager.writeLock(Integer.parseInt(handle[i]), handle[1]);
 				}
 			}
-			tranLogger.logChanges(handle[0] + " " + handle[1] + " " + handle[3]);
+			tranLogger.logChanges(handle[0] + " " + handle[1] + " " + handle[3], request);
 		} else if (handle[0].equals("RECON")) {
 			// node reconnect
 		} else if (handle[0].equals("ABORT")) {
 			queryHandler.abortTransaction(handle[1]);
 			manager.unLock(handle[1]);
-			tranLogger.logChanges("Aborted transaction: " + handle[1]);
+			tranLogger.logChanges("ABORT " + handle[1], request);
 		} else if (handle[0].equals("COMMIT")) {
 			queryHandler.commitTransaction(handle[1]);
 			if (handle[2].equals("read")) {
@@ -42,21 +42,21 @@ public class NodeRequestHandler implements RequestHandler{
 				queryHandler.writeQuery(handle[1], handle[3]);
 			}
 			manager.unLock(handle[1]);
-			tranLogger.logChanges("Commited transaction: " + handle[1]);
+			tranLogger.logChanges("COMMIT " + handle[1], request);
 		} else if (handle[0].equals("READY")) {
 			//pop up window to ask user whether
 //			tranLogger.logChanges("Voted to " + <put decision here> + "transaction: " + handle[1]); 
 		} else if (handle[0].equals("LOG")) {
 			// receive log record
-			tranLogger.logChanges("Received log from central"); 
+			tranLogger.logChanges("Received log from central", request); 
 		} else if (handle[0].equals("ISOLVL")) {
 			int isolationLevel = Integer.parseInt(handle[1]);
 			queryHandler.setIsolationLevel(isolationLevel, handle[2]);
-			tranLogger.logChanges("Isolation level set to " + handle[1]);
+			tranLogger.logChanges("Isolation level set to " + handle[1], request);
 		} else if (handle[0].equals("START")) {
 			DBConnection.getInstance();
 			queryHandler.addTransaction(handle[1], this.nodeSchema);
-			tranLogger.logChanges("New Transaction: " + handle[1]);
+			tranLogger.logChanges("New Transaction: " + handle[1], request);
 		} else if(handle[0].equals("DATA FINISH")){
 			if (handle[2].equals("read")) {
 				queryHandler.readQuery(handle[1], handle[3]);
@@ -64,7 +64,7 @@ public class NodeRequestHandler implements RequestHandler{
 				queryHandler.writeQuery(handle[1], handle[3]);
 			}
 			manager.unLock(handle[1]);
-			tranLogger.logChanges("Result set received from transaction: " + handle[1]);
+			tranLogger.logChanges("Result set received from transaction: " + handle[1], request);
 		}
 	}
 }

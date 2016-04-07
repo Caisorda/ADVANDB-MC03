@@ -1,5 +1,7 @@
 package mc03.model;
 
+import mc03.Constants;
+
 public class Container {
 	private String locationName;
 	private static Container instance = null;
@@ -8,7 +10,6 @@ public class Container {
 		if (instance != null) {
 			return instance;
 		} else {
-			System.out.println("Container.java: Instance already exists!");
 			instance = new Container();
 		}
 
@@ -28,13 +29,15 @@ public class Container {
 	}
 
 	public String getDatabaseName() {
-		if (locationName.equals("Central")) {
+		System.out.println("Container.java: locationName is: " + locationName);
+		if (locationName.equals(Constants.CENTRAL)) {
 			return "db_hpq";
-		} else if (locationName.equals("Marinduque")) {
+		} else if (locationName.equals(Constants.MARINDUQUE)) {
 			return "db_hpq_marinduque";
-		} else if (locationName.equals("Palawan")) {
+		} else if (locationName.equals(Constants.PALAWAN)) {
 			return "db_hpq_palawan ";
 		}
+
 		return null;
 	}
 

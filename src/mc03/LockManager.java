@@ -50,6 +50,10 @@ public class LockManager {
 				locks.get(Integer.parseInt(lockedColumns[i])).unlock(transID);
 			}
 			transactionLocks.remove(transID);
+			
+			if(transactionLocks.isEmpty()){
+				TransactionLogger.getInstance().logChanges("CHECKPOINT");
+			}
 		}
 	}
 	

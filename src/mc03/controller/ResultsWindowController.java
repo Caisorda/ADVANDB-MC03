@@ -19,7 +19,7 @@ public class ResultsWindowController {
 	public void getData(){
 		
 	}
-	public void initialize( ResultSet resultSet)
+	public void initializeData( ResultSet resultSet)
 	  {
 	    try
 	    {
