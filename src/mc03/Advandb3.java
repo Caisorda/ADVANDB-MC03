@@ -36,12 +36,23 @@ public class Advandb3 {
         
         
         Thread catcher = new Thread(new reciever(9876, 1024, 1024));
+        
         catcher.start();
         sender man = new sender();
-
-            man.send("PM :caloy");
-            man.send("daadn");
-            man.send("sendagain");
+        String kelp = "SELECT * \n" +
+                      "From sys_config";
+        
+        
+  
+         //   man.send("PM ~ caloy");
+            man.DoQuery(kelp);
+            
+            
+ 
+            
+            
+            
+            
         
     }
 

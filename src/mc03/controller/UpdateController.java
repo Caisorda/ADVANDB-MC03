@@ -2,6 +2,7 @@ package mc03.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -13,6 +14,8 @@ public class UpdateController {
 	
 	@FXML TextField hpq_hh_id_textField;
 	@FXML TextField hh_id_textField;
+	
+	@FXML RadioButton hpq_hh_id_radioButton;
 	
 	@FXML Button 	updateQueryButton;
 	 QueryListController qlc;
