@@ -6,12 +6,15 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import mc03.controller.LoginController;
 import mc03.controller.MainController;
 import mc03.network.Client;
@@ -37,7 +40,13 @@ public void start(Stage primaryStage) throws Exception{
 primaryStage.setTitle("LOGIN");
 primaryStage.setScene(scene);
 primaryStage.setResizable(false);
-primaryStage.show();
+primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+	@Override
+	public void handle(WindowEvent event) {
+		Platform.exit();
+		System.exit(0);
+	}
+});
 primaryStage.show();	             
 
 

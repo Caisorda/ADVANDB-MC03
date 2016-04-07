@@ -55,6 +55,10 @@ public class Client {
         }
     }
 
+    public LoginController getLoginController() {
+        return loginController;
+    }
+
     public void setLoginController(LoginController loginController) {
         this.loginController = loginController;
     }

@@ -35,14 +35,15 @@ public class QueryListController implements Initializable {
 	 private MainController mc;
 	 private List<String> getQueryAttributes()
 	  { 
-		 List<String> attr = new ArrayList();
+		 List<String> attr = new ArrayList<>();
 		 attr.add("1");
 		 return attr;
 	  }
 	 
 	 public void initialize(MainController mc){
+		 System.out.println("QueryListController.java: initialize w/o @Override was called");
 		 this.queryListView.getItems().addAll(qAttr);
-		 queryList = new ArrayList();
+		 queryList = new ArrayList<>();
 		 this.mc=mc;
 		 
 	 }
@@ -65,8 +66,9 @@ public class QueryListController implements Initializable {
 	 @Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
+		 System.out.println("QueryListController.java: initialize w @Override was called");
 		 this.queryListView.getItems().addAll(qAttr);
-		 queryList = new ArrayList();
+		 queryList = new ArrayList<>();
 	}
 	 
 	public  void addList(String str){

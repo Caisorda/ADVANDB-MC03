@@ -1,6 +1,9 @@
 package mc03;
 
 public class Constants {
+    public static final String DB_USERNAME = "root";
+    public static final String DB_PASSWORD = "root";
+
     public static final int TIMEOUT_TIME = 5000;
     public static final int PORT_SERVER = 9001;
     public static final int PORT_CENTRAL = 9002;
