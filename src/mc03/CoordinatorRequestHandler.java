@@ -4,30 +4,48 @@ import mc03.model.DBConnection;
 
 public class CoordinatorRequestHandler implements RequestHandler{
 
+	sender send;
+	
+	public CoordinatorRequestHandler(){
+		
+	}
+	
 	@Override
 	public void interpret(String request) {
 		String handle[] = request.split("~");
 		
 		if(handle[0].equals("QUERY")){
-			//run query
+			if (handle[2].equals("read")) {
+				for (int i = 4; i < handle.hashCode(); i++) {
+					manager.readLock(Integer.parseInt(handle[i]), handle[1]);
+				}
+			} else if (handle[2].equals("write")) {
+				for (int i = 4; i < handle.hashCode(); i++) {
+					manager.writeLock(Integer.parseInt(handle[i]), handle[1]);
+				}
+			}
+			//send ready to two other nodes
 		}else if(handle[0].equals("RECON")){
 			//node reconnect
 		}else if(handle[0].equals("GO")){
-			//vote to commit transaction
+			//wait for everyone else to send go then send commit
 		}else if(handle[0].equals("STOP")){
-			//vote to abort transaction
-		}else if(handle[0].equals("DATA")){
-			//result set from read query
-		}else if(handle[0].equals("READY")){
-			//node asks to ready transaction
+			//immeadiately send abort
 		}else if(handle[0].equals("LOG")){
 			//receive log record
 		}else if(handle[0].equals("ISOLVL")){
 			int isolationLevel = Integer.parseInt(handle[1]);
-			manager.setIsolationLevel(isolationLevel);
+			queryHandler.setIsolationLevel(isolationLevel, handle[2]);
 		} else if (handle[0].equals("START")) {
 			DBConnection.getInstance();
-			queryHandler.addTransaction(handle[1], DBConnection.getConnection("db_hpq"));
+			queryHandler.addTransaction(handle[1], "db_hpq");
+		} else if(handle[0].equals("DATA FINISH")){
+			if (handle[2].equals("read")) {
+				queryHandler.readQuery(handle[1], handle[3]);
+			} else if (handle[2].equals("write")) {
+				queryHandler.writeQuery(handle[1], handle[3]);
+			}
+			manager.unLock(handle[1]);
 		}
 	}
 

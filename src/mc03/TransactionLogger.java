@@ -7,17 +7,17 @@ import java.io.PrintWriter;
 import java.util.GregorianCalendar;
 
 public class TransactionLogger {
-	public TransactionLogger instance;
+	public static TransactionLogger instance;
 	
 	private TransactionLogger(){
 		
 	}
 	
-	public TransactionLogger getInstance(){
+	public static TransactionLogger getInstance(){
 		if(instance == null){
-			this.instance = new TransactionLogger();
+			instance = new TransactionLogger();
 		}
-		return this.instance;
+		return instance;
 	}
 	
 	public void logChanges(String change){
