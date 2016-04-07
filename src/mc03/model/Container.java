@@ -8,7 +8,6 @@ public class Container {
 		if (instance != null) {
 			return instance;
 		} else {
-			System.out.println("Container.java: Instance already exists!");
 			instance = new Container();
 		}
 

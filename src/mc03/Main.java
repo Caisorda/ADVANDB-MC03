@@ -14,13 +14,14 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import mc03.controller.LoginController;
 import mc03.controller.MainController;
+import mc03.network.Client;
 
 public class Main extends Application{
     private Stage primaryStage;
     private AnchorPane root;
     final private ExecutorService executorService = Executors.newSingleThreadExecutor();
 	        
-Thread catcher = new Thread(new reciever(9876, 1024, 1024));
+//Thread catcher = new Thread(new reciever(Constants.PORT_SERVER, 1024, 1024));
 
 public void start(Stage primaryStage) throws Exception{
 	this.primaryStage= primaryStage;
@@ -36,10 +37,11 @@ public void start(Stage primaryStage) throws Exception{
 primaryStage.setTitle("LOGIN");
 primaryStage.setScene(scene);
 primaryStage.setResizable(false);
-primaryStage.show();	
+primaryStage.show();
+		Client.getInstance();
 
-sender man = new sender();
-catcher.start();
+//sender man = new sender();
+//catcher.start();
 //String query ="select (CASE WHEN croptype=1 THEN 'SUGAR CANE'"+
 //        "WHEN croptype=2 THEN 'PALAY'"+
 //        "WHEN croptype=3 THEN 'CORN'"+
