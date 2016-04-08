@@ -41,7 +41,7 @@ public class MainController {
 	 private List<Transaction> transactions;
 	 @FXML TextField transactionField;
 	 @FXML Text 	 ipAddress;
-	 
+	 @FXML TextField ipAddressField;
 	 @FXML RadioButton readUncommitedRButton;
 	 @FXML RadioButton readCommitedRButon;
 	 @FXML RadioButton repeatableReadRBUtton;
@@ -169,9 +169,11 @@ public class MainController {
 	
 		sender man = new sender();
 //		 
-
-		man.setadress("localhost");
+		
+		man.setadress(ipAddressField.getText());
 		man.send("DATA ~ "+man.resultData(t.getQueries()));
+		
+		
 //		for (Machine m : Server.getInstance().getMachines()) {
 //
 //			ServerMessageSender.sendMessage(" DATA ~ " + man.resultData(query), m);	

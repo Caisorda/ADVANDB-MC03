@@ -11,15 +11,15 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mc03.controller.MainController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mc03.controller.MainController">
    <children>
       <AnchorPane prefHeight="200.0" prefWidth="200.0">
          <children>
             <Button layoutX="483.0" layoutY="86.0" mnemonicParsing="false" onAction="#HandleQueryButton" text="Add Transaction" />
             <Label layoutX="360.0" layoutY="22.0" text="IP Address:" />
             <Text fx:id="ipAddress" layoutX="430.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="88.0" />
-            <Button layoutX="474.0" layoutY="121.0" mnemonicParsing="false" text="Execute Globally" onAction="#handleGlobalExecution"/>
-            <Button layoutX="352.0" layoutY="121.0" mnemonicParsing="false" text="Execute Locally" onAction="#handleLocalExecution"/>
+            <Button layoutX="474.0" layoutY="121.0" mnemonicParsing="false" onAction="#handleGlobalExecution" text="Execute Globally" />
+            <Button layoutX="352.0" layoutY="121.0" mnemonicParsing="false" onAction="#handleLocalExecution" text="Execute Locally" />
             <Text layoutX="206.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ready?" />
             <Text layoutX="252.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Commit?" />
             <TextField fx:id="transactionField" layoutX="325.0" layoutY="86.0" />
@@ -33,6 +33,8 @@
             <RadioButton fx:id="repeatableReadRBUtton" layoutX="8.0" layoutY="99.0" mnemonicParsing="false" text="Repeatable Read " toggleGroup="$isolationLevel" />
             <RadioButton fx:id="serializableRButton" layoutX="8.0" layoutY="125.0" mnemonicParsing="false" text="Serializable" toggleGroup="$isolationLevel" />
             <Label layoutX="11.0" layoutY="22.0" text="Isolation Level" />
+            <TextField fx:id="ipAddressField" layoutX="326.0" layoutY="58.0" />
+            <Label layoutX="186.0" layoutY="62.0" text="Enter IP Address to send." />
          </children>
       </AnchorPane>
       <AnchorPane prefHeight="70.0" prefWidth="600.0" style="-fx-background-color: darkgreen;">
