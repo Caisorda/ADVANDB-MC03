@@ -26,6 +26,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
+import mc03.model.Container;
+
 /**
  *
  * @author miguel
@@ -78,7 +80,7 @@ public class sender {
  
         try {  
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_hpq", "root", Constants.DB_PASSWORD);
+            Connection con = con = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Container.getInstance().getDatabaseName(), "root", Constants.DB_PASSWORD);
             Statement stmt = con.createStatement();
             long startTime = System.currentTimeMillis();
             ResultSet rs = stmt.executeQuery(query);
@@ -223,7 +225,7 @@ public String resultData(String query){
 	try{
 
     Class.forName("com.mysql.jdbc.Driver");
-    Connection con = con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_hpq", "root", Constants.DB_PASSWORD);
+    Connection con = con = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Container.getInstance().getDatabaseName(), "root", Constants.DB_PASSWORD);
     Statement stmt = con.createStatement();
     long startTime = System.currentTimeMillis();
     ResultSet rs = stmt.executeQuery(query);

@@ -46,7 +46,7 @@ public class Container {
 		} else if (locationName.equals(Constants.MARINDUQUE)) {
 			return "db_hpq_marinduque";
 		} else if (locationName.equals(Constants.PALAWAN)) {
-			return "db_hpq_palawan ";
+			return "db_hpq_palawan";
 		}
 
 		return null;
