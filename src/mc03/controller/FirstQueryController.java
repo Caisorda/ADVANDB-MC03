@@ -110,7 +110,7 @@ stage.close();
 				 "inner join hpq_crop crop"+
 				 "on(crop.hpq_hh_id = hh.id)"+
 				 "where croptype ="+crop+
-				 "group by hh."+selected;
+				 " group by hh."+selected;
 		 
 		 checker =1;
 
@@ -121,7 +121,7 @@ stage.close();
 		 query = "select hh."+selected+", count(hh.id) as count"+
 				" from hpq_hh hh"+
 				" where irfa_crop = 2"+
-				 "group by hh."+selected;
+				 " group by hh."+selected;
 
 	 }
 	 else if(str =="total income of households that have Insurance"){

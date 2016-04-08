@@ -14,7 +14,7 @@ import javafx.util.Callback;
 
 public class ResultsWindowController {
 	
-	@FXML TableView results;
+	@FXML TableView tblResults;
 	
 	public void getData(){
 		
@@ -40,7 +40,7 @@ public class ResultsWindowController {
 	            return new SimpleStringProperty(o == null ? "NULL" : o.toString());
 	          }
 	        });
-	        this.results.getColumns().add(column);
+	        this.tblResults.getColumns().add(column);
 	      }
 	      ObservableList<ObservableList> data = 
 	        FXCollections.observableArrayList();
@@ -53,8 +53,8 @@ public class ResultsWindowController {
 	        }
 	        data.add(row);
 	      }
-	      this.results.setItems(data);
-	      this.results.refresh();
+	      this.tblResults.setItems(data);
+	      this.tblResults.refresh();
 	    }
 	    catch (SQLException e)
 	    {

@@ -24,6 +24,7 @@ import mc03.Constants;
 import mc03.Main;
 import mc03.QueryHandler;
 import mc03.model.Container;
+import mc03.model.DBConnection;
 import mc03.model.Transaction;
 import mc03.network.Client;
 import mc03.view.SoftwareNotification;
@@ -50,6 +51,7 @@ public class MainController {
 
 	}
 	public void addTransaction(String query){
+		System.out.println("HELLOLOLO");
 		String temp = null;
 		Exception e = null;
 		try{
@@ -65,13 +67,15 @@ public class MainController {
 		 tran.setName(temp);
 		 tran.setQuery(query);
 		 transactions.add(tran);
-		this.transactionsList.getItems().addAll("ID: " + temp + "Transaction:  " + query);
+		System.out.println(tran.getId() + " / " + tran.getName() + " / " + tran.getQueries());
+		this.transactionsList.getItems().addAll("ID: " + temp + "; Transaction:  " + query);
 
 		QueryHandler.getInstance().addTransaction(temp, Container.getInstance().getDatabaseName());
 		
 	}
 
 	public void handleLocalExecution() {
+		DBConnection.getInstance();
 		SoftwareNotification.notifySuccess("Successfully clicked Local button.");
 		for (Transaction t : transactions) {
 			QueryHandler.getInstance().commitTransaction(t.getId() + "");
@@ -89,6 +93,7 @@ public class MainController {
 				Parent root = loader.load();
 				ResultsWindowController controller =
 						loader.getController();
+				System.out.println("IS IT NULL??? " + controller);
 				controller.initializeData(rs);
 				Stage stage = new Stage();
 				stage.setScene(new Scene(root));
