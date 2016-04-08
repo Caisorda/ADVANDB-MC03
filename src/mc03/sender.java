@@ -81,6 +81,7 @@ public class sender {
         try {  
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = con = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Container.getInstance().getDatabaseName(), "root", Constants.DB_PASSWORD);
+
             Statement stmt = con.createStatement();
             long startTime = System.currentTimeMillis();
             ResultSet rs = stmt.executeQuery(query);
@@ -226,6 +227,7 @@ public String resultData(String query){
 
     Class.forName("com.mysql.jdbc.Driver");
     Connection con = con = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Container.getInstance().getDatabaseName(), "root", Constants.DB_PASSWORD);
+
     Statement stmt = con.createStatement();
     long startTime = System.currentTimeMillis();
     ResultSet rs = stmt.executeQuery(query);

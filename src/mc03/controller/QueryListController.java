@@ -31,6 +31,7 @@ public class QueryListController implements Initializable {
 	 @FXML Button handlecropVolumeCropType;
 	 @FXML Button listQueries;
 	 @FXML Button updateButton;
+	 @FXML Button clearButton;
 	 private List<String> queryList;
 	 private List<String> queryTypeList;
 	 private List<Integer> columnList;
@@ -213,6 +214,9 @@ public class QueryListController implements Initializable {
 
 		 addQuery(query, "read", columns);
 	 }	
+	 public void handleClearButton(){
+		 
+	 }
 	 
 	 
 }

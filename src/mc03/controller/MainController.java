@@ -114,15 +114,20 @@ public class MainController {
 		}
 
 		for (Transaction t : transactions) {
+			ResultSet rs = null;
 			if(t.getQueryType().equals("read")){
 				for(int i : t.getLockedColumns())
 					LockManager.getInstance().readLock(i, t.getName());
+				 rs = QueryHandler.getInstance().readQuery(t.getId() + "", t.getQueries());
 			}else if(t.getQueryType().equals("write")){
 				for(int i : t.getLockedColumns())
 					LockManager.getInstance().writeLock(i, t.getName());
+				QueryHandler.getInstance().writeQuery(t.getId() + "", t.getQueries());
 			}
-			ResultSet rs = QueryHandler.getInstance().readQuery(t.getId() + "", t.getQueries());
+			
+			
 			LockManager.getInstance().unLock(t.getName());
+			QueryHandler.getInstance().commitTransaction(t.getId() + "");
 			System.out.println("MainController.java: Executing Transaction ID " + t.getId());
 			SoftwareNotification.notifySuccess("Successfully clicked Local button.");
 			SoftwareNotification.notifySuccess("Isolation level is:"+isolationLevel2);
@@ -154,6 +159,8 @@ public class MainController {
 				e.printStackTrace();
 			}
 		}
+		transactions.clear();
+		transactionsList.getItems().clear();
 	}
 
 	public void handleGlobalExecution() {
