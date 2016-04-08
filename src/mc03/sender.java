@@ -79,7 +79,7 @@ public class sender {
  
         try {  
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_hpq", "root", "DLSU");
+            Connection con = con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_hpq_marinduque", "root", "DLSU");
             Statement stmt = con.createStatement();
             long startTime = System.currentTimeMillis();
             ResultSet rs = stmt.executeQuery(query);
@@ -224,7 +224,7 @@ public String resultData(String query){
 	try{
 
     Class.forName("com.mysql.jdbc.Driver");
-    Connection con = con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_hpq", "root", "DLSU");
+    Connection con = con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_hpq_marinduque", "root", "DLSU");
     Statement stmt = con.createStatement();
     long startTime = System.currentTimeMillis();
     ResultSet rs = stmt.executeQuery(query);

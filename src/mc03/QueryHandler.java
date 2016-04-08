@@ -91,7 +91,7 @@ public class QueryHandler {
 			}
 		try {
 			PreparedStatement prepped = con.prepareStatement(query);
-			prepped.executeQuery();
+			prepped.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
