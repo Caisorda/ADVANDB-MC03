@@ -72,32 +72,17 @@ public class sender {
     
     
     public void DoQuery(String query) {
-        
-        
-        
-        try {
-  
+ 
+        try {  
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_hpq", "root", "DLSU");
             Statement stmt = con.createStatement();
-
             long startTime = System.currentTimeMillis();
             ResultSet rs = stmt.executeQuery(query);
             ResultSetMetaData rsmetadata = rs.getMetaData();
             int columns = rsmetadata.getColumnCount();
 
-            DefaultTableModel dtm = new DefaultTableModel();
-            Vector columns_name = new Vector();
-            Vector data_rows = new Vector();
 
-            for (int i = 1; i < columns + 1; i++) {
-                columns_name.addElement(rsmetadata.getColumnName(i));
-            }
-            dtm.setColumnIdentifiers(columns_name);
-
-            
-            
-            
            //storing it 
     ArrayList<String> arrayList = new ArrayList<String>(); 
     while (rs.next()) {              
@@ -113,8 +98,7 @@ public class sender {
             
 
  
-        long endTime = System.currentTimeMillis();
-        long duration = (endTime - startTime);
+
        
 
             //convert to bytearray
@@ -171,13 +155,65 @@ public class sender {
         
      
         //send bytes to place
-            
-
-        
-        
         
         
     }
+    
+    
+    public void SendArrayList(ArrayList<String> arraylist){
+    	 ByteArrayOutputStream baos = new ByteArrayOutputStream();
+         DataOutputStream out = new DataOutputStream(baos);
+
+         for (String element : arraylist) {
+             //System.out.println("msg:" + element);
+             if(element!=null)
+				try {
+					out.writeUTF(element);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+         }
+         byte[] bytes = baos.toByteArray();
+     
+     
+         
+         toprint(bytes);
+         
+         
+      
+         
+                     DatagramSocket clientSocket;
+     try {
+         clientSocket = new DatagramSocket();
+      
+         String address = "localhost";
+         InetAddress IPAddress = InetAddress.getByName(address);
+         
+         byte[] sendData = new byte[1024];
+
+
+         //  sentence=sentence+x;
+         sendData = bytes;
+         System.out.println("LEEEEENGTH!"+sendData.length);
+         DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 9876);
+
+             clientSocket.send(sendPacket);
+
+
+         clientSocket.close();
+ }catch (Exception ex) {
+         System.out.println("Error:5555 " + ex);
+         ex.printStackTrace();
+     }
+    	
+    	
+    	
+    	
+    }
+    
+    
+    
 public String resultData(String query){
 	
 	String qData="";

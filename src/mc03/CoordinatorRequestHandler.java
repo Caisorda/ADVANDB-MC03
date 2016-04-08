@@ -24,7 +24,8 @@ public class CoordinatorRequestHandler implements RequestHandler{
 					manager.writeLock(Integer.parseInt(handle[i]), handle[1]);
 				}
 			}
-			//send ready to two other nodes
+			tranLogger.logChanges(handle[0] + " " + handle[1] + " " + handle[3], request);
+			
 		}else if(handle[0].equals("RECON")){
 			//node reconnect
 		}else if(handle[0].equals("GO")){
@@ -33,12 +34,15 @@ public class CoordinatorRequestHandler implements RequestHandler{
 			//immeadiately send abort
 		}else if(handle[0].equals("LOG")){
 			//receive log record
+			tranLogger.logChanges("Received log from " + handle[1], request); 
 		}else if(handle[0].equals("ISOLVL")){
 			int isolationLevel = Integer.parseInt(handle[1]);
 			queryHandler.setIsolationLevel(isolationLevel, handle[2]);
+			tranLogger.logChanges("Isolation level set to " + handle[1], request);
 		} else if (handle[0].equals("START")) {
 			DBConnection.getInstance();
 			queryHandler.addTransaction(handle[1], "db_hpq");
+			tranLogger.logChanges("New Transaction: " + handle[1], request);
 		} else if(handle[0].equals("DATA FINISH")){
 			if (handle[2].equals("read")) {
 				queryHandler.readQuery(handle[1], handle[3]);

@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import mc03.model.Container;
+
 public class RecoveryHandler {
 	
 	private QueryHandler handler;
@@ -21,7 +23,7 @@ public class RecoveryHandler {
 	private RecoveryHandler(){
 		handler = QueryHandler.getInstance();
 		manager = LockManager.getInstance();
-		reqHandler = new NodeRequestHandler(/*node's schema*/);
+		reqHandler = new NodeRequestHandler(Container.getInstance().getDatabaseName());
 	}
 	
 	public static RecoveryHandler getInstance(){

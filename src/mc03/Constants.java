@@ -16,6 +16,8 @@ public class Constants {
     public static final String MSG_CONNECT = "CONNECT";
     public static final String MSG_DISCONNECT = "DISCONNECT";
     public static final String MSG_OK = "ok";
+    public static final String MSG_GO = "go";
+    public static final String MSG_STOP = "stop";
     public static final String MSG_NEW_DUDE = "NEWDUDE";
 
     public static final String CENTRAL = "central";
