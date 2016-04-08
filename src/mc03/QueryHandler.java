@@ -28,13 +28,25 @@ public class QueryHandler {
 		System.out.println("Transactions is: " + transactions);
 	}
 
-	public synchronized void setIsolationLevel(int level, String transID){
-		this.isolationLevel = level;
-		Connection conn = transactions.get(transID);
+	public synchronized void setIsolationLevel(int level) {
 		try {
-			conn.setTransactionIsolation(level);
+			this.isolationLevel = level;
+			for (DBSomething somethang : somethingList) {
+				Connection con = somethang.getConn();
+				con.setTransactionIsolation(level);
+			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public synchronized void setIsolationLevel(int level, String transId) {
+		try {
+			Connection conn = transactions.get(transId);
+			conn.setTransactionIsolation(level);
+			this.isolationLevel = level;
+
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}

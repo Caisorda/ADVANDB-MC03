@@ -9,6 +9,9 @@ import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import mc03.model.Container;
+
+import java.util.ArrayList;
 
 public class FirstQueryController {
 	 @FXML  RadioButton municipalityButton;
@@ -25,11 +28,14 @@ public class FirstQueryController {
 	 QueryListController qlc;
 	 private String str;
 	 private String query;
+	 private String type;
 	 private String selected;
 	 private String crop;
+	private ArrayList<Integer> columns;
 	 private int checker;
    
  public void initialize( QueryListController qlc,String str){
+	 columns = new ArrayList();
 	 this.str=str;
 	 checker =0;
 	 this.qlc=qlc;
@@ -84,14 +90,23 @@ public class FirstQueryController {
  public void handleAddQueryButton(){
 initializeQuery();
 this.qlc.addList(str);
-this.qlc.addQuery(query);
+this.qlc.addQuery(query, type, columns);
 System.out.println("handle query button has been clicked.");
 Stage stage = (Stage) addQueryButton.getScene().getWindow();
 stage.close();
  }
  public void initializeQuery(){
+	 switch(selected){
+		 case "mun": columns.add(2);
+			 			break;
+		 case "zone": columns.add(3);
+			 break;
+		 case "brgy": columns.add(4);
+			 break;
+	 }
 	 if (str == "Crop Volume"){
 		 System.out.println("query is relted to crop volume.");
+
 		 
 		query = "select hh."+selected+", sum(crop.crop_vol) as volume" +
 		"from hpq_hh hh"+
@@ -100,7 +115,11 @@ stage.close();
 		" where croptype ="+crop+
 		" group by hh."+selected;
 
+		 type = "read";
+
 		 checker=1;
+
+		 columns.add(10);
 	 }
 	 else if(str =="Crop per Household"){
 		 System.out.println("query is relted to crop per household..");
@@ -111,8 +130,13 @@ stage.close();
 				 "on(crop.hpq_hh_id = hh.id)"+
 				 "where croptype ="+crop+
 				 " group by hh."+selected;
-		 
+		 type = "read";
+
 		 checker =1;
+
+		 columns.add(0);
+		 columns.add(8);
+		 columns.add(9);
 
 	 }
 	 else if(str  == "Households that have Insurance"){
@@ -123,6 +147,11 @@ stage.close();
 				" where irfa_crop = 2"+
 				 " group by hh."+selected;
 
+		 type = "read";
+
+		 columns.add(0);
+		 columns.add(7);
+
 	 }
 	 else if(str =="total income of households that have Insurance"){
 		 System.out.println("query is relted to total income per households.");
@@ -132,6 +161,11 @@ stage.close();
 				 "where irfa_crop = 2"+
 				 "group by hh."+selected;
 
+		 type = "read";
+
+		 columns.add(5);
+		 columns.add(7);
+
 	 }
 	 else if (str == "Total farmland"){
 		 System.out.println("query is relted tototal fram land..");
@@ -139,6 +173,11 @@ stage.close();
 		 query = "	select "+selected+"	, sum(nalp) as landarea"+
 				" from hpq_hh hh"+
 				 "group by hh."+selected;
+
+		 type = "read";
+
+		 columns.add(6);
+
 
 	 }
  }

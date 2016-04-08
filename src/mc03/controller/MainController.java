@@ -3,24 +3,24 @@ package mc03.controller;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import mc03.Constants;
+import mc03.LockManager;
 import mc03.Main;
 import mc03.QueryHandler;
 import mc03.model.Container;
@@ -49,9 +49,29 @@ public class MainController {
 	String temp =""+ InetAddress.getLocalHost();
 	ipAddress.setText(temp);
 
+		isolationLevel.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
+			public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
+
+				if (isolationLevel.getSelectedToggle() ==  readCommitedRButon) {
+					System.out.println("Set to Read Committed");
+					QueryHandler.getInstance().setIsolationLevel(Connection.TRANSACTION_READ_COMMITTED);
+				} else if(isolationLevel.getSelectedToggle() ==  readUncommitedRButton) {
+					System.out.println("Now set to Read Uncommitted");
+					QueryHandler.getInstance().setIsolationLevel(Connection.TRANSACTION_READ_UNCOMMITTED);
+				} else if(isolationLevel.getSelectedToggle() ==  repeatableReadRBUtton) {
+					System.out.println("Now set to Repeatable Read");
+					QueryHandler.getInstance().setIsolationLevel(Connection.TRANSACTION_REPEATABLE_READ);
+				} else if(isolationLevel.getSelectedToggle() ==  serializableRButton) {
+					System.out.println("Now set to Serializable");
+					QueryHandler.getInstance().setIsolationLevel(Connection.TRANSACTION_SERIALIZABLE);
+
+				}
+
+			}
+		});
+
 	}
-	public void addTransaction(String query){
-		System.out.println("HELLOLOLO");
+	public void addTransaction(String query, String type, List<Integer> columns){
 		String temp = null;
 		Exception e = null;
 		try{
@@ -66,6 +86,9 @@ public class MainController {
 		tran.setId(Integer.parseInt(temp));
 		 tran.setName(temp);
 		 tran.setQuery(query);
+		tran.setQueryType(type);
+		for(int i: columns)
+			tran.addColumnToLock(i);
 		 transactions.add(tran);
 		System.out.println(tran.getId() + " / " + tran.getName() + " / " + tran.getQueries());
 		this.transactionsList.getItems().addAll("ID: " + temp + "; Transaction:  " + query);
@@ -82,7 +105,15 @@ public class MainController {
 		}
 
 		for (Transaction t : transactions) {
+			if(t.getQueryType().equals("read")){
+				for(int i : t.getLockedColumns())
+					LockManager.getInstance().readLock(i, t.getName());
+			}else if(t.getQueryType().equals("write")){
+				for(int i : t.getLockedColumns())
+					LockManager.getInstance().writeLock(i, t.getName());
+			}
 			ResultSet rs = QueryHandler.getInstance().readQuery(t.getId() + "", t.getQueries());
+			LockManager.getInstance().unLock(t.getName());
 			System.out.println("MainController.java: Executing Transaction ID " + t.getId());
 			try {
 				FXMLLoader loader = new FXMLLoader(getClass()
