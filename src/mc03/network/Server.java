@@ -33,8 +33,8 @@ public class Server {
     private LockManager manager = LockManager.getInstance();
     private QueryHandler queryHandler = QueryHandler.getInstance();
     private TransactionLogger tranLogger = TransactionLogger.getInstance();
+    private static HashMap<String,Integer> goCount = new HashMap();
     private RecoveryHandler recoveryHandler = RecoveryHandler.getInstance();
-    private static HashMap<String,Integer> goCount = new HashMap();;
     
     public static void main(String[] args) {
         Server.getInstance().initializeComponents();
@@ -61,6 +61,10 @@ public class Server {
         if (!machines.contains(machine))
             machines.add(machine);
     }
+    
+    public ArrayList<Machine> getMachines() {
+    	return (ArrayList<Machine>) machines;
+    }
 
     private class ServerListener implements Runnable {
         private DatagramSocket datagramSocket;
@@ -75,9 +79,12 @@ public class Server {
                 receiveData = new byte[Constants.BUFFER_SIZE];
                 datagramPacket = new DatagramPacket(receiveData, receiveData.length);
                 try {
+                	System.out.println("in while loop");
                     datagramSocket.receive(datagramPacket);
+                	System.out.println("received");
                     receivedMessage = new String(datagramPacket.getData()).trim();
                     String[] tokens = receivedMessage.split("~");
+					System.out.println(receivedMessage);
 
 					switch (tokens[0]) {
 					case Constants.MSG_CONNECT:
@@ -94,6 +101,34 @@ public class Server {
 								ServerMessageSender.sendMessage(Constants.MSG_NEW_DUDE + "~"
 										+ newMachine.getMachineLocation() + "~" + newMachine.getIpAddress(), m);
 							}
+						}
+						break;
+					case "DATA":
+						String qData = getName(tokens[1].trim());
+						String[] parts = qData.split("/");
+						int numCol = Integer.parseInt(parts[0].trim());
+						String[] columnNames = parts[1].split(":");
+						
+						datagramSocket.receive(datagramPacket);
+						System.out.println("RECEIVED: FROM" + datagramPacket.getAddress());
+
+						System.out.println("MOOO!" + datagramPacket.getLength());
+						this.receiveData = this.trim(this.receiveData, datagramPacket.getLength());
+
+						byte[] tempData = new byte[datagramPacket.getLength()];
+						for (int i = 0; i < datagramPacket.getLength(); i++) {
+							tempData[i] = receiveData[i];
+						}
+
+						ByteArrayInputStream bais = new ByteArrayInputStream(tempData);
+						DataInputStream in = new DataInputStream(bais);
+
+						while (in.available() > 0) {
+							String element = in.readUTF();
+							
+							//insert arraylist here.
+							System.out.println("TTTT:" + element);
+							// results.add(element);
 						}
 						break;
 					case "QUERY":
@@ -135,7 +170,7 @@ public class Server {
 						}.start();
 						break;
 					case "RECON":
-						// node reconnect
+						ServerMessageSender.SendArrayList(tranLogger.getLogs(tranLogger.parseDate(tokens[1])), tokens[2]);
 						break;
 					case "GO":
 						if (goCount.containsKey(tokens[1])) {
@@ -167,16 +202,16 @@ public class Server {
 						DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
 						receiveData = this.trim(receiveData, receivePacket.getLength());
 
-						byte[] tempData = new byte[receivePacket.getLength()];
+						byte[] logData = new byte[receivePacket.getLength()];
 						for (int i = 0; i < receivePacket.getLength(); i++) {
-							tempData[i] = receiveData[i];
+							logData[i] = receiveData[i];
 						}
 
-						ByteArrayInputStream bais = new ByteArrayInputStream(tempData);
-						DataInputStream in = new DataInputStream(bais);
+						ByteArrayInputStream logis = new ByteArrayInputStream(logData);
+						DataInputStream dis = new DataInputStream(logis);
 						ArrayList<String> logs = new ArrayList();
-						while (in.available() > 0) {
-							String element = in.readUTF();
+						while (dis.available() > 0) {
+							String element = dis.readUTF();
 							logs.add(element);
 							//insert arraylist here.
 							System.out.println("TTTT:" + element);
@@ -196,7 +231,7 @@ public class Server {
 						break;
 					case "START":
 						DBConnection.getInstance();
-						queryHandler.addTransaction(tokens[1], "db_hpq");
+						queryHandler.addTransaction(tokens[1], Container.getInstance().getDatabaseName());
 						for (Machine m : machines) {
 							if (!Container.getInstance().getLocationName().equals(m.getMachineLocation())) {
 								ServerMessageSender.sendMessage(receivedMessage, m);
@@ -222,6 +257,14 @@ public class Server {
                 }
             }
         }
+        
+    	public String getName(String req) {
+    		String res = "ERROR";
+    		String[] arr;
+    		arr = req.split("~");
+    		res = arr[1];
+    		return res;
+    	}
 
         public byte[] trim(byte[] bytes, int i) {
 

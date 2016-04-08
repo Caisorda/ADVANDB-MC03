@@ -39,7 +39,7 @@ public class sender {
     
 
     public void setadress(String adrez){
-    	address = adrez;
+    	this.address = adrez;
     	
     }
     
@@ -70,7 +70,6 @@ public class sender {
         } catch (IOException ex) {
             Logger.getLogger(sender.class.getName()).log(Level.SEVERE, null, ex);
         } 
-
     }
     
     
@@ -79,7 +78,7 @@ public class sender {
  
         try {  
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_hpq", "root", "DLSU");
+            Connection con = con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_hpq", "root", Constants.DB_PASSWORD);
             Statement stmt = con.createStatement();
             long startTime = System.currentTimeMillis();
             ResultSet rs = stmt.executeQuery(query);
@@ -127,7 +126,7 @@ public class sender {
         try {
             clientSocket = new DatagramSocket();
          
-            String address = "localhost";
+            
             InetAddress IPAddress = InetAddress.getByName(address);
             
             byte[] sendData = new byte[1024];
@@ -191,7 +190,7 @@ public class sender {
      try {
          clientSocket = new DatagramSocket();
       
-         String address = "localhost";
+         //String address = "localhost";
          InetAddress IPAddress = InetAddress.getByName(address);
          
          byte[] sendData = new byte[1024];
@@ -224,7 +223,7 @@ public String resultData(String query){
 	try{
 
     Class.forName("com.mysql.jdbc.Driver");
-    Connection con = con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_hpq", "root", "DLSU");
+    Connection con = con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_hpq", "root", Constants.DB_PASSWORD);
     Statement stmt = con.createStatement();
     long startTime = System.currentTimeMillis();
     ResultSet rs = stmt.executeQuery(query);
