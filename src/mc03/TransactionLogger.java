@@ -9,6 +9,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class TransactionLogger {
@@ -91,5 +96,40 @@ public class TransactionLogger {
              e.printStackTrace();
         }
         
-    }   
+    } 
+	
+	public ArrayList<String> getLogs(Date lastDate){
+		ArrayList<String> logs = new ArrayList();
+		
+		try(BufferedReader br = new BufferedReader(new FileReader("technicallog.txt"))) {
+			String line = br.readLine();
+			String handle[] = line.split("~");
+			Date logDate = parseDate(handle[0]);
+            while (line != null && lastDate.before(lastDate)) {
+                logs.add(line);
+                line = br.readLine();
+            }
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return logs;
+	}
+	
+	public Date parseDate(String dateString){
+		DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+		Date date = null;
+		try {
+			date = df.parse(dateString);
+			System.out.println(date); // Sat Jan 02 00:00:00 GMT 2010
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return date;
+	}
 }

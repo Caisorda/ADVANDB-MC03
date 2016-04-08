@@ -52,7 +52,6 @@ public class LockManager {
 			transactionLocks.remove(transID);
 			
 			if(transactionLocks.isEmpty()){
-
 				TransactionLogger.getInstance().logChanges("CHECKPOINT","CHECKPOINT");
 			}
 		}

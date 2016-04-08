@@ -29,7 +29,8 @@ public class NodeRequestHandler implements RequestHandler{
 			}
 			tranLogger.logChanges(handle[0] + " " + handle[1] + " " + handle[3], request);
 		} else if (handle[0].equals("RECON")) {
-			// node reconnect
+			tranLogger.getLogs(tranLogger.parseDate(handle[1]));
+			//send logs to node
 		} else if (handle[0].equals("ABORT")) {
 			queryHandler.abortTransaction(handle[1]);
 			manager.unLock(handle[1]);
@@ -47,8 +48,8 @@ public class NodeRequestHandler implements RequestHandler{
 			//pop up window to ask user whether
 //			tranLogger.logChanges("Voted to " + <put decision here> + "transaction: " + handle[1]); 
 		} else if (handle[0].equals("LOG")) {
-			// receive log record
-			tranLogger.logChanges("Received log from central", request); 
+//			recoveryHandler.recoverState(logs);
+			tranLogger.logChanges("Received log from " + handle[1], request); 
 		} else if (handle[0].equals("ISOLVL")) {
 			int isolationLevel = Integer.parseInt(handle[1]);
 			queryHandler.setIsolationLevel(isolationLevel, handle[2]);
@@ -57,7 +58,7 @@ public class NodeRequestHandler implements RequestHandler{
 			DBConnection.getInstance();
 			queryHandler.addTransaction(handle[1], this.nodeSchema);
 			tranLogger.logChanges("New Transaction: " + handle[1], request);
-		} else if(handle[0].equals("DATA FINISH")){
+		} /*else if(handle[0].equals("DATA FINISH")){
 			if (handle[2].equals("read")) {
 				queryHandler.readQuery(handle[1], handle[3]);
 			} else if (handle[2].equals("write")) {
@@ -65,6 +66,6 @@ public class NodeRequestHandler implements RequestHandler{
 			}
 			manager.unLock(handle[1]);
 			tranLogger.logChanges("Result set received from transaction: " + handle[1], request);
-		}
+		}*/
 	}
 }
