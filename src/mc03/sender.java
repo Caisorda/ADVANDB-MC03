@@ -31,7 +31,7 @@ import javax.swing.table.DefaultTableModel;
  * @author miguel
  */
 public class sender {
-    String address="localhost";
+    String address;
     public sender(){
     
     	
@@ -46,7 +46,7 @@ public class sender {
     public void send(String patatas){
         try {
             char x = 0;
-            byte[] sendData = new byte[1024];
+            byte[] sendData = new byte[5000];
 
             System.out.println("SENDING"+patatas);
             

@@ -45,7 +45,8 @@ public class FirstQueryController {
 		    public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
 		    	
 		    	if (group.getSelectedToggle() !=  null) {
-		    		 cropTypePane.setVisible(true);if(checker ==1){
+		    		cropTypePane.setVisible(true);
+		    		 if(checker ==1){ 
 		         }}
 		         if (group.getSelectedToggle() ==  municipalityButton) {
 		             System.out.println("municipalityButton is clicked...");
@@ -106,8 +107,6 @@ stage.close();
 	 }
 	 if (str == "Crop Volume"){
 		 System.out.println("query is relted to crop volume.");
-
-		 
 		query = "select hh."+selected+", sum(crop.crop_vol) as volume " +
 		"from hpq_hh hh "+
 		" inner join hpq_crop crop "+
@@ -123,7 +122,6 @@ stage.close();
 	 }
 	 else if(str =="Crop per Household"){
 		 System.out.println("query is relted to crop per household..");
-		 
 		 query = " select hh."+selected+", count(hh.id) as count "+
 				 "from hpq_hh hh "+
 				 "inner join hpq_crop crop "+

@@ -27,8 +27,11 @@ import mc03.reciever;
 import mc03.sender;
 import mc03.model.Container;
 import mc03.model.DBConnection;
+import mc03.model.Machine;
 import mc03.model.Transaction;
 import mc03.network.Client;
+import mc03.network.Server;
+import mc03.network.ServerMessageSender;
 import mc03.view.SoftwareNotification;
 
 public class MainController {
@@ -45,7 +48,7 @@ public class MainController {
 	 @FXML RadioButton serializableRButton;
 	 
 	 @FXML ToggleGroup isolationLevel;
-
+	 String isolationLevel2;
 	public void initializeVariables() throws UnknownHostException{
 	transactions = new ArrayList<>();
 	String temp =""+ InetAddress.getLocalHost();
@@ -55,16 +58,20 @@ public class MainController {
 			public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
 
 				if (isolationLevel.getSelectedToggle() ==  readCommitedRButon) {
-					System.out.println("Set to Read Committed");
+					isolationLevel2="Set to Read Committed";
+					SoftwareNotification.notifySuccess("Isolation level set to:"+isolationLevel2);
 					QueryHandler.getInstance().setIsolationLevel(Connection.TRANSACTION_READ_COMMITTED);
 				} else if(isolationLevel.getSelectedToggle() ==  readUncommitedRButton) {
-					System.out.println("Now set to Read Uncommitted");
+					isolationLevel2="Now set to Read Uncommitted";
+					SoftwareNotification.notifySuccess("Isolation level set to:"+isolationLevel2);
 					QueryHandler.getInstance().setIsolationLevel(Connection.TRANSACTION_READ_UNCOMMITTED);
 				} else if(isolationLevel.getSelectedToggle() ==  repeatableReadRBUtton) {
-					System.out.println("Now set to Repeatable Read");
+					isolationLevel2="Now set to Repeatable Read";
+					SoftwareNotification.notifySuccess("Isolation level set to:"+isolationLevel2);
 					QueryHandler.getInstance().setIsolationLevel(Connection.TRANSACTION_REPEATABLE_READ);
 				} else if(isolationLevel.getSelectedToggle() ==  serializableRButton) {
-					System.out.println("Now set to Serializable");
+					isolationLevel2="Now set to Serializable";
+					SoftwareNotification.notifySuccess("Isolation level set to:"+isolationLevel2);
 					QueryHandler.getInstance().setIsolationLevel(Connection.TRANSACTION_SERIALIZABLE);
 
 				}
@@ -101,7 +108,7 @@ public class MainController {
 
 	public void handleLocalExecution() {
 		DBConnection.getInstance();
-		SoftwareNotification.notifySuccess("Successfully clicked Local button.");
+		
 		for (Transaction t : transactions) {
 			QueryHandler.getInstance().commitTransaction(t.getId() + "");
 		}
@@ -117,6 +124,12 @@ public class MainController {
 			ResultSet rs = QueryHandler.getInstance().readQuery(t.getId() + "", t.getQueries());
 			LockManager.getInstance().unLock(t.getName());
 			System.out.println("MainController.java: Executing Transaction ID " + t.getId());
+			SoftwareNotification.notifySuccess("Successfully clicked Local button.");
+			SoftwareNotification.notifySuccess("Isolation level is:"+isolationLevel2);
+			
+			
+			
+			
 			try {
 				FXMLLoader loader = new FXMLLoader(getClass()
 						.getResource("view/ResultsWindow.fxml"));
@@ -144,27 +157,25 @@ public class MainController {
 	}
 
 	public void handleGlobalExecution() {
+		for (Transaction t : transactions) {
+			QueryHandler.getInstance().commitTransaction(t.getId() + "");
+	
 		sender man = new sender();
-		String query ="select (CASE WHEN croptype=1 THEN 'SUGAR CANE'"+
-        "WHEN croptype=2 THEN 'PALAY'"+
-        "WHEN croptype=3 THEN 'CORN'"+
-        "WHEN croptype=4 THEN 'COFFEE'"+
-        "ELSE 'OTHER'"+
-		 "END) crop_name, count(hh.id)"+
-		 "from hpq_hh hh "+
-		 "inner join hpq_crop crop"+
-		 " on(crop.hpq_hh_id = hh.id)"+
-		 "where croptype is not null "+
-		 "group by crop.croptype";
-		
-		man.send("DATA ~ "+man.resultData(query));
+//		 
+
+		man.setadress("localhost");
+		man.send("DATA ~ "+man.resultData(t.getQueries()));
+//		for (Machine m : Server.getInstance().getMachines()) {
+//
+//			ServerMessageSender.sendMessage(" DATA ~ " + man.resultData(query), m);	
+//		}
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		man.DoQuery(query);
+		man.DoQuery(t.getQueries());	}
 		SoftwareNotification.notifySuccess("Successfully clicked Global button.");
 	}
 	

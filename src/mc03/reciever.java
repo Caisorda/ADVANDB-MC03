@@ -34,8 +34,8 @@ import mc03.model.Container;
 public class reciever implements Runnable {
 
 	DatagramSocket serverSocket;
-	byte[] receiveData = new byte[1024];
-	byte[] sendData = new byte[1024];
+	byte[] receiveData = new byte[5000];
+	byte[] sendData = new byte[5000];
 	public int type = 1;
 	RequestHandler requestHandler;
 	ResultsWindowController  controller;
@@ -129,7 +129,7 @@ public class reciever implements Runnable {
 		results=new ArrayList();
 			while (true) {
 				String sentence = "";
-				byte[] receiveData = new byte[1024];
+				byte[] receiveData = new byte[5000];
 				DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
 
 				//serverSocket.setSoTimeout(5000);

@@ -25,6 +25,10 @@ public class Server {
         Server.getInstance().initializeComponents();
     }
 
+    public List<Machine> getMachines() {
+    	return machines;
+    }
+    
     public static Server getInstance() {
         if (serverInstance == null) {
             serverInstance = new Server();

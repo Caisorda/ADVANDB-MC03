@@ -122,17 +122,44 @@ public class ResultsWindowController implements Initializable{
 	      }
 		  ObservableList<ObservableList> data = 
 			        FXCollections.observableArrayList();
-		  System.out.println(list.size());
+		  System.out.println(list.size());ObservableList<String> row = null;
+		  
+		  int count=0;
 		 for(int i=0;i<list.size();i++)
 	      {
-	        ObservableList<String> row = 
-	          FXCollections.observableArrayList();
-	        for (int x = 0; x < numColumns; x++) {
-	        	System.out.println("loop?");
-	          row.add(list.get(x));
-	        }
-	        data.add(row);
+			  System.out.println("loop:"+i);
+			  System.out.println(list.size()); 
+			  if((i)%2==0){
+				  System.out.println("start"); 
+		      row = FXCollections.observableArrayList();
+		      System.out.println("Loop #" + i + " : " + list.get(i));
+		      row.add(list.get(i));
+			 
+			  }else{
+				  System.out.println("last"); 
+			  row.add(list.get(i));
+			  data.add(row);
+			  }
+			  
+			 
+//	        ObservableList<String> row = 
+//	          FXCollections.observableArrayList();
+//	     int  temp=i;
+//	        for (int x = 0; x < numColumns; x++) {
+//	        	System.out.println("loop?");
+//	        	row.add(list.get(i));
+//	        	temp++;;
+//	        
+//	         System.out.println("count: " +count+"I: "+i);
+//	        }
+//	        System.out.println("count: " + count);
+//	        count++;
+//	        
+//	        if (i%numColumns==0)
+//	        data.add(row);
 	      }
+		 
+		 
 
 		 this.tblResults.setItems(data);
 	     this.tblResults.refresh();
