@@ -39,7 +39,7 @@ public class sender {
     
 
     public void setadress(String adrez){
-    	address = adrez;
+    	this.address = adrez;
     	
     }
     
@@ -70,7 +70,6 @@ public class sender {
         } catch (IOException ex) {
             Logger.getLogger(sender.class.getName()).log(Level.SEVERE, null, ex);
         } 
-
     }
     
     
@@ -127,7 +126,7 @@ public class sender {
         try {
             clientSocket = new DatagramSocket();
          
-            String address = "localhost";
+            
             InetAddress IPAddress = InetAddress.getByName(address);
             
             byte[] sendData = new byte[1024];
@@ -191,7 +190,7 @@ public class sender {
      try {
          clientSocket = new DatagramSocket();
       
-         String address = "localhost";
+         //String address = "localhost";
          InetAddress IPAddress = InetAddress.getByName(address);
          
          byte[] sendData = new byte[1024];

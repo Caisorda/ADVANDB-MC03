@@ -19,7 +19,7 @@ public class RecoveryHandler {
 	private QueryHandler handler;
 	private LockManager manager;
 	private RequestHandler reqHandler;
-	private static RecoveryHandler instance;
+	private static RecoveryHandler instance = null;
 	private ArrayList<String> lostTransactions;
 	
 	private RecoveryHandler(){
