@@ -3,6 +3,7 @@
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.List;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -11,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
+import mc03.view.SoftwareNotification;
 
 public class ResultsWindowController {
 	
@@ -61,6 +63,43 @@ public class ResultsWindowController {
 	      e.printStackTrace();
 	    }
 	  }
-	
+	public void initializeData(List<String> list,String[] columnName,int numColumns){
+		
+		try{
+		  for (int i = 0; i < numColumns; i++)
+	      {
+	        TableColumn column = 
+	          new TableColumn(columnName[i]);
+	        
+	        final int j = i;
+	        column.setCellValueFactory(new Callback()
+	        {
+	            @Override
+	            public Object call(Object p) {
+	            Object o = ((ObservableList)((TableColumn.CellDataFeatures<ObservableList, String>)p).getValue()).get(j);
+	            return new SimpleStringProperty(o == null ? "NULL" : o.toString());
+	          }
+	        });
+	        this.tblResults.getColumns().add(column);
+	      }
+		  ObservableList<ObservableList> data = 
+			        FXCollections.observableArrayList();
+		  
+		 for(int i=0;i<list.size();i++)
+	      {
+	        ObservableList<String> row = 
+	          FXCollections.observableArrayList();
+	        for (int x = 0; x < numColumns; x++) {
+	          row.add(list.get(x));
+	        }
+	        data.add(row);
+	      }
+
+		 this.tblResults.setItems(data);
+	     this.tblResults.refresh();
+		}catch(Exception e){
+			SoftwareNotification.notifyError("Error @ Results Window Controller.");
+		}
+	}
 	
 }

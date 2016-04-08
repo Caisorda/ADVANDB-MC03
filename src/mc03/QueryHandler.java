@@ -28,7 +28,7 @@ public class QueryHandler {
 		System.out.println("Transactions is: " + transactions);
 	}
 
-	public void setIsolationLevel(int level, String transID){
+	public synchronized void setIsolationLevel(int level, String transID){
 		this.isolationLevel = level;
 		Connection conn = transactions.get(transID);
 		try {
@@ -51,7 +51,7 @@ public class QueryHandler {
         return instance;
 	}
 	
-	public void addTransaction(String transID, String schema) {
+	public synchronized void addTransaction(String transID, String schema){
 		Connection transaction = DBConnection.getConnection(schema);
 		try {
 			transaction.setAutoCommit(false);
@@ -68,16 +68,15 @@ public class QueryHandler {
 		somethingList.add(new DBSomething(transID, transaction));
 		System.out.println(transactions.size());
 	}
-	
-	public void writeQuery(String transID, String query){
-		Connection con = null;
 
-		for (DBSomething somethang : somethingList) {
-			if (somethang.getTransID().equals(transID)) {
-				con = somethang.getConn();
+	public synchronized void writeQuery(String transID, String query){
+			Connection con = null;
+
+			for (DBSomething somethang : somethingList) {
+				if (somethang.getTransID().equals(transID)) {
+					con = somethang.getConn();
+				}
 			}
-		}
-
 		try {
 			PreparedStatement prepped = con.prepareStatement(query);
 			prepped.executeQuery();
@@ -104,16 +103,15 @@ public class QueryHandler {
 		}
 		return results;
 	}
-	
-	public void commitTransaction(String transID){
-		Connection con = null;
 
-		for (DBSomething somethang : somethingList) {
-			if (somethang.getTransID().equals(transID)) {
-				con = somethang.getConn();
+	public synchronized void commitTransaction(String transID){
+			Connection con = null;
+
+			for (DBSomething somethang : somethingList) {
+				if (somethang.getTransID().equals(transID)) {
+					con = somethang.getConn();
+				}
 			}
-		}
-
 		try {
 			con.commit();
 		} catch (SQLException e) {
@@ -121,8 +119,8 @@ public class QueryHandler {
 		}
 		transactions.remove(transID);
 	}
-	
-	public void abortTransaction(String transID){
+
+	public synchronized void abortTransaction(String transID){
 		Connection con = null;
 
 		for (DBSomething somethang : somethingList) {

@@ -48,7 +48,7 @@ public class sender {
             
             DatagramSocket clientSocket = new DatagramSocket();
             String address = "localhost";
-            //address="10.100.217.172";
+           //address="10.100.217.172";
             InetAddress IPAddress = InetAddress.getByName(address);
 
             String sentence = patatas;
@@ -78,7 +78,7 @@ public class sender {
         try {
   
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_hpq", "root", "Pr0crastinate");
+            Connection con = con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_hpq", "root", "DLSU");
             Statement stmt = con.createStatement();
 
             long startTime = System.currentTimeMillis();
@@ -184,7 +184,7 @@ public String resultData(String query){
 	try{
 
     Class.forName("com.mysql.jdbc.Driver");
-    Connection con = con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_hpq", "root", "Pr0crastinate");
+    Connection con = con = DriverManager.getConnection("jdbc:mysql://localhost:3306/db_hpq", "root", "DLSU");
     Statement stmt = con.createStatement();
     long startTime = System.currentTimeMillis();
     ResultSet rs = stmt.executeQuery(query);
