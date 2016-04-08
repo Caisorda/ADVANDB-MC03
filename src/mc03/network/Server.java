@@ -25,6 +25,7 @@ import java.util.concurrent.Executors;
 
 public class Server {
 
+
     private static Server serverInstance = null;
     private final List<Machine> machines = new ArrayList<>();
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();

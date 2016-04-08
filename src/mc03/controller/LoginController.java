@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.beans.value.ChangeListener;
@@ -19,6 +21,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import mc03.Constants;
 import mc03.Main;
+import mc03.reciever;
 import mc03.model.Container;
 import mc03.network.Client;
 import mc03.network.Server;
@@ -53,10 +56,19 @@ public class LoginController implements Initializable {
     private boolean checker;
     private String siteLocationName;
     private int portNum;
+	 List<String> queryList = new ArrayList();
+	    String[] columnName = new String[2];
+	    int numColumns;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+    	columnName[0] ="test";
+    	columnName[1]="this";
+    	numColumns =2;
 
+    	queryList.add("palawan");
+    	queryList.add("1");
+    	
         try {
             String temp = "" + InetAddress.getLocalHost();
             ipAddress.setText(temp);
@@ -97,6 +109,10 @@ public class LoginController implements Initializable {
     }
 
     public void HandleConnect() throws IOException {
+    	System.out.println("WAITING OT RECEIVE>");
+
+    	
+
     	if (chosenSite.getSelectedToggle() ==  null) {
 			             SoftwareNotification.notifyError("Please select server first.");
 			         }else{
@@ -131,6 +147,13 @@ public class LoginController implements Initializable {
         SoftwareNotification.notifySuccess("Logged in as: "+siteLocationName+
         		" IP Address: "+ipAddress.getText());
         Container.getInstance().setLocationName(siteLocationName);
+		reciever  r= new reciever(9876, 1024, 1024);
+		//r.setController(controller);
+		Thread catcher = new Thread(r);
+		
+		
+		catcher.start();
+
 			         }
     }
     /*

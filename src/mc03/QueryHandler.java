@@ -4,11 +4,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import mc03.model.Container;
 import mc03.model.DBConnection;
-
+import mc03.model.DBSomething;
 
 
 public class QueryHandler {
@@ -17,20 +19,34 @@ public class QueryHandler {
 	public static int REPEATABLE_READ = 3;
 	public static int SERIALIZABLE = 4;
 	private int isolationLevel;
-	private HashMap<String, Connection> transactions;
-	private static QueryHandler instance;
+	private HashMap<String, Connection> transactions = new HashMap<>();
+	private List<DBSomething> somethingList = new ArrayList<>();
+	private static QueryHandler instance = null;
 	
-	private QueryHandler(){
-		transactions = new HashMap<>();
+	private QueryHandler() {
+		DBConnection.getInstance();
+		System.out.println("Transactions is: " + transactions);
 	}
 
-	public synchronized void setIsolationLevel(int level, String transID){
-		this.isolationLevel = level;
-		Connection conn = transactions.get(transID);
+	public synchronized void setIsolationLevel(int level) {
 		try {
-			conn.setTransactionIsolation(level);
+			this.isolationLevel = level;
+			for (DBSomething somethang : somethingList) {
+				Connection con = somethang.getConn();
+				con.setTransactionIsolation(level);
+			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public synchronized void setIsolationLevel(int level, String transId) {
+		try {
+			Connection conn = transactions.get(transId);
+			conn.setTransactionIsolation(level);
+			this.isolationLevel = level;
+
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
@@ -41,6 +57,7 @@ public class QueryHandler {
 	
 	public static QueryHandler getInstance(){
 		if (instance == null) {
+			System.out.println("QueryHandler.java: Creating a new instance");
             instance = new QueryHandler();
         }
         return instance;
@@ -53,11 +70,25 @@ public class QueryHandler {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		transactions.put(transID, transaction);
+		try {
+			transaction.prepareStatement("getInstance().url + Container.getInstance().getDatabaseName()");
+			System.out.println("Successfully quiried halskdfj");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		//transactions.put(transID, transaction);
+		somethingList.add(new DBSomething(transID, transaction));
+		System.out.println(transactions.size());
 	}
-	
+
 	public synchronized void writeQuery(String transID, String query){
-		Connection con = transactions.get(transID);
+			Connection con = null;
+
+			for (DBSomething somethang : somethingList) {
+				if (somethang.getTransID().equals(transID)) {
+					con = somethang.getConn();
+				}
+			}
 		try {
 			PreparedStatement prepped = con.prepareStatement(query);
 			prepped.executeQuery();
@@ -67,8 +98,15 @@ public class QueryHandler {
 	}
 	
 	public ResultSet readQuery(String transID, String query){
-		Connection con = DBConnection.getConnection(Container.getInstance().getDatabaseName()); // DAVID: I CHANGED THIS BTW
+		Connection con = null;
+
+		for (DBSomething somethang : somethingList) {
+			if (somethang.getTransID().equals(transID)) {
+				con = somethang.getConn();
+			}
+		}
 		ResultSet results = null;
+
 		try {
 			PreparedStatement prepped = con.prepareStatement(query);
 			results = prepped.executeQuery();
@@ -77,9 +115,15 @@ public class QueryHandler {
 		}
 		return results;
 	}
-	
+
 	public synchronized void commitTransaction(String transID){
-		Connection con = transactions.get(transID);
+			Connection con = null;
+
+			for (DBSomething somethang : somethingList) {
+				if (somethang.getTransID().equals(transID)) {
+					con = somethang.getConn();
+				}
+			}
 		try {
 			con.commit();
 		} catch (SQLException e) {
@@ -87,9 +131,16 @@ public class QueryHandler {
 		}
 		transactions.remove(transID);
 	}
-	
+
 	public synchronized void abortTransaction(String transID){
-		Connection con = transactions.get(transID);
+		Connection con = null;
+
+		for (DBSomething somethang : somethingList) {
+			if (somethang.getTransID().equals(transID)) {
+				con = somethang.getConn();
+			}
+		}
+
 		try {
 			con.close();
 		} catch (SQLException e) {

@@ -11,10 +11,20 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import mc03.controller.FirstQueryController;
+import mc03.controller.LoginController;
+import mc03.controller.ResultsWindowController;
 import mc03.model.Container;
 
 /**
@@ -28,8 +38,14 @@ public class reciever implements Runnable {
 	byte[] sendData = new byte[1024];
 	public int type = 1;
 	RequestHandler requestHandler;
-
+	ResultsWindowController  controller;
+	List<String> results;
+	sender man ;
+	int numcol;
+	String[] colnames;
 	public reciever(int portnumber, int recieverbuffersize, int sentDatasize) {
+		man=new sender();
+		Container.getInstance().getDatabaseName();
 			requestHandler = new NodeRequestHandler("Marindique");
 		try {
 			serverSocket = new DatagramSocket(portnumber);
@@ -51,6 +67,8 @@ public class reciever implements Runnable {
 //		this.requestHandler = reqHandler; 
 //	}
 	
+	
+	
 	public String getrequest(String req) {
 		String res = "ERROR";
 		String[] arr;
@@ -58,6 +76,14 @@ public class reciever implements Runnable {
 		res = arr[0];
 		return res;
 	}
+
+//	public ResultsWindowController getController() {
+//		return controller;
+//	}
+//
+//	public void setController(ResultsWindowController controller) {
+//		this.controller = controller;
+//	}
 
 	public String getname(String req) {
 		String res = "ERROR";
@@ -71,10 +97,36 @@ public class reciever implements Runnable {
 
 		return Arrays.copyOf(bytes, i + 1);
 	}
+	
+	public void openResultsWindow(List<String> results,String[] colnames,int numcol) throws IOException{
+		System.out.println("1111");
+		FXMLLoader loader = new FXMLLoader(getClass()
+				.getResource("view/ResultsWindow.fxml"));
+		
+		
+		loader.setLocation(Main.class.getResource("view/ResultsWindow.fxml"));
+		Parent root = null;
+		try {
+			root = loader.load();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ResultsWindowController controller =
+				loader.<ResultsWindowController>getController();
+		controller.initializeData(results,colnames,numcol);  
+		Stage stage = new Stage();
+		stage.setScene(new Scene(root));
+		stage.setTitle("Resu11111lts");
+		stage.show();
+
+				
+			}
 
 	public void run() {
 
 		try {
+		results=new ArrayList();
 			while (true) {
 				String sentence = "";
 				byte[] receiveData = new byte[1024];
@@ -91,13 +143,28 @@ public class reciever implements Runnable {
 
 					System.out.println("request___" + this.getrequest(sentence.trim()));
 					System.out.println("messag____" + this.getname(sentence.trim()));
+					
+					Container.getInstance().setblah(this.getname(sentence.trim()) ) ;
+					
+					
+
 					if (this.getrequest(sentence.trim()).equals("DATA")) {
 						//DOM: this.getname(sentence.trim()) would give you the column number and name
+						//controller.initializeData();
+						System.out.println("put in list: "+ this.getname(sentence.trim()));
+						String qData=this.getname(sentence.trim());
+						String[] parts = qData.split("/");
+						 numcol=Integer.parseInt(parts[0].trim());
+						 colnames =  parts[1].split(":");
+						System.out.println("number:"+numcol+" number"+colnames[0]+colnames[1]);
+						
+						this.type=0;
+						
+						
+						
+						
 						}
-					if (this.getrequest(sentence.trim()).equals("AGREE")) {	
-						//setting the thing to receive the result set
-						this.type = 0;
-					}
+
 						
 						
 					
@@ -107,8 +174,10 @@ public class reciever implements Runnable {
 
 					
 					
-				} else if (this.type == 0) {
-
+				}
+				
+				if (this.type == 0) {
+					serverSocket.receive(receivePacket);
 					System.out.println("RECEIVED: FROM" + receivePacket.getAddress());
 
 					System.out.println("MOOO!" + receivePacket.getLength());
@@ -127,20 +196,32 @@ public class reciever implements Runnable {
 						
 						//insert arraylist here.
 						System.out.println("TTTT:" + element);
+						results.add(element);
 					}
 					
+					//
+				//	System.out.println("looP?");
+					 Platform.runLater(new Runnable() {
+						
+						@Override
+						public void run() {
+							// TODO Auto-generated method stub
+							
+ 
+		try {
+			openResultsWindow(results, colnames, numcol);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//System.out.println("ddd");
+	
+
+						}         
+					});
 					
-					
-					
-					
-					try{
-						String handle[] = sentence.split("~");
-						this.type = 1;
-						//requestHandler.interpret("DATA FINISH~" + handle[1] + "~" + handle[2] 
-							//					+ "~" + handle[3]);
-					}catch(Exception e){
-						e.printStackTrace();
-					}
+
+					this.type=1;
 				}
 
 			}

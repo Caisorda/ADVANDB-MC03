@@ -17,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import mc03.Main;
+import mc03.model.Container;
 import mc03.view.SoftwareNotification;
 
 public class QueryListController implements Initializable {
@@ -31,6 +32,8 @@ public class QueryListController implements Initializable {
 	 @FXML Button listQueries;
 	 @FXML Button updateButton;
 	 private List<String> queryList;
+	 private List<String> queryTypeList;
+	 private List<Integer> columnList;
 	 private  ObservableList<String> qAttr = FXCollections.observableArrayList();
 	 private MainController mc;
 	 private List<String> getQueryAttributes()
@@ -44,6 +47,8 @@ public class QueryListController implements Initializable {
 		 System.out.println("QueryListController.java: initialize w/o @Override was called");
 		 this.queryListView.getItems().addAll(qAttr);
 		 queryList = new ArrayList<>();
+		 columnList = new ArrayList<>();
+		 queryTypeList = new ArrayList<>();
 		 this.mc=mc;
 		 
 	 }
@@ -69,6 +74,8 @@ public class QueryListController implements Initializable {
 		 System.out.println("QueryListController.java: initialize w @Override was called");
 		 this.queryListView.getItems().addAll(qAttr);
 		 queryList = new ArrayList<>();
+		 columnList = new ArrayList<>();
+		 queryTypeList = new ArrayList<>();
 	}
 	 
 	public  void addList(String str){
@@ -77,12 +84,14 @@ public class QueryListController implements Initializable {
 		qAttr.clear();
 	}
 	
-	public void addQuery(String str){
+	public void addQuery(String str, String type, ArrayList<Integer> columns){
 		queryList.add(str);
+		queryTypeList.add(type);
+		columnList.addAll(columns);
 	}
 	public void handleListQueries(){
 		try{
-		mc.addTransaction(queryList.get(0));
+		mc.addTransaction(queryList.get(0), queryTypeList.get(0), columnList);
 		System.out.println("added to transaction: "+queryList.get(0));}
 		catch(IndexOutOfBoundsException e){
 			SoftwareNotification.notifyError("please select query."); 
@@ -171,33 +180,38 @@ public class QueryListController implements Initializable {
 	 }
 	 public void handlenumHouseholdsCropType(){
 		 addList("number of households that produce each crop type.");
-		 String query ="select (CASE WHEN croptype=1 THEN 'SUGAR CANE'"+
-			        "WHEN croptype=2 THEN 'PALAY'"+
-			        "WHEN croptype=3 THEN 'CORN'"+
-			        "WHEN croptype=4 THEN 'COFFEE'"+
-			        "ELSE 'OTHER'"+
-					 "END) crop_name, count(hh.id)"+
+		 String query ="select (CASE WHEN croptype=1 THEN 'SUGAR CANE' "+
+			        "WHEN croptype=2 THEN 'PALAY' "+
+			        "WHEN croptype=3 THEN 'CORN' "+
+			        "WHEN croptype=4 THEN 'COFFEE' "+
+			        "ELSE 'OTHER' "+
+					 "END) crop_name, count(hh.id) "+
 					 "from hpq_hh hh "+
-					 "inner join hpq_crop crop"+
-					 " on(crop.hpq_hh_id = hh.id)"+
+					 "inner join hpq_crop crop "+
+					 " on(crop.hpq_hh_id = hh.id) "+
 					 " where croptype is not null "+
 					 "group by crop.croptype";
-		 
-		 addQuery(query);
+		 ArrayList<Integer> columns = new ArrayList();
+		 columns.add(0);
+		 columns.add(8);
+		 columns.add(9);
+		 addQuery(query, "read", columns);
 	 }
 	 public void handlecropVolumeCropType(){
 		 addList("Crop volume per crop type.");
-		 String query = "select (CASE WHEN croptype=1 THEN 'SUGAR CANE'"+
-                 		"WHEN croptype=2 THEN 'PALAY'"+
-                 		"WHEN croptype=3 THEN 'CORN'"+
-                 		"WHEN croptype=4 THEN 'COFFEE'"+
-                 		"END) crop_name, sum(crop_vol)"+
-						"from hpq_crop crop"+
-						"where croptype is not null"+
+		 String query = "select (CASE WHEN croptype=1 THEN 'SUGAR CANE' "+
+                 		"WHEN croptype=2 THEN 'PALAY' "+
+                 		"WHEN croptype=3 THEN 'CORN' "+
+                 		"WHEN croptype=4 THEN 'COFFEE' "+
+                 		"END) crop_name, sum(crop_vol) "+
+						"from hpq_crop crop "+
+						"where croptype is not null "+
 						"group by crop.croptype";
+		 ArrayList<Integer> columns = new ArrayList();
+		 columns.add(9);
+		 columns.add(10);
 
-
-		 addQuery(query);
+		 addQuery(query, "read", columns);
 	 }	
 	 
 	 

@@ -1,23 +1,61 @@
  package mc03.controller;
 
+import java.io.IOException;
+import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.stage.Stage;
 import javafx.util.Callback;
+import mc03.Main;
+import mc03.reciever;
+import mc03.sender;
 import mc03.view.SoftwareNotification;
 
-public class ResultsWindowController {
+public class ResultsWindowController implements Initializable{
 	
-	@FXML TableView results;
+	@FXML TableView tblResults;
 	
+	
+	
+	public void openResultsWindow(List<String> results,String[] colnames,int numcol) throws IOException{
+		
+		System.out.println("\n\n\n\n\n\n\n****************************");
+		System.out.println("RECEIVED>");
+		System.out.println("colnames: " +colnames[0]);
+		FXMLLoader loader = new FXMLLoader(getClass()
+				.getResource("view/ResultsWindow.fxml"));
+		
+		
+		loader.setLocation(Main.class.getResource("view/ResultsWindow.fxml"));
+		Parent root = null;
+		try {
+			root = loader.load();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ResultsWindowController controller =
+				loader.<ResultsWindowController>getController();
+		controller.initializeData(results,colnames,numcol);  
+		Stage stage = new Stage();
+		stage.setScene(new Scene(root));
+		stage.setTitle("Resu11111lts");
+		stage.show();
+	}
 	public void getData(){
 		
 	}
@@ -42,7 +80,7 @@ public class ResultsWindowController {
 	            return new SimpleStringProperty(o == null ? "NULL" : o.toString());
 	          }
 	        });
-	        this.results.getColumns().add(column);
+	        this.tblResults.getColumns().add(column);
 	      }
 	      ObservableList<ObservableList> data = 
 	        FXCollections.observableArrayList();
@@ -55,8 +93,8 @@ public class ResultsWindowController {
 	        }
 	        data.add(row);
 	      }
-	      this.results.setItems(data);
-	      this.results.refresh();
+	      this.tblResults.setItems(data);
+	      this.tblResults.refresh();
 	    }
 	    catch (SQLException e)
 	    {
@@ -80,26 +118,35 @@ public class ResultsWindowController {
 	            return new SimpleStringProperty(o == null ? "NULL" : o.toString());
 	          }
 	        });
-	        this.results.getColumns().add(column);
+	        this.tblResults.getColumns().add(column);
 	      }
 		  ObservableList<ObservableList> data = 
 			        FXCollections.observableArrayList();
-		  
+		  System.out.println(list.size());
 		 for(int i=0;i<list.size();i++)
 	      {
 	        ObservableList<String> row = 
 	          FXCollections.observableArrayList();
 	        for (int x = 0; x < numColumns; x++) {
+	        	System.out.println("loop?");
 	          row.add(list.get(x));
 	        }
 	        data.add(row);
 	      }
 
-		 this.results.setItems(data);
-	     this.results.refresh();
+		 this.tblResults.setItems(data);
+	     this.tblResults.refresh();
 		}catch(Exception e){
 			SoftwareNotification.notifyError("Error @ Results Window Controller.");
 		}
+	}
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		
+
+		
+	
+		
 	}
 	
 }

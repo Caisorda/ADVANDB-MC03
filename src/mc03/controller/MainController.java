@@ -3,27 +3,30 @@ package mc03.controller;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import mc03.Constants;
+import mc03.LockManager;
 import mc03.Main;
 import mc03.QueryHandler;
+import mc03.reciever;
+import mc03.sender;
 import mc03.model.Container;
+import mc03.model.DBConnection;
 import mc03.model.Transaction;
 import mc03.network.Client;
 import mc03.view.SoftwareNotification;
@@ -48,8 +51,29 @@ public class MainController {
 	String temp =""+ InetAddress.getLocalHost();
 	ipAddress.setText(temp);
 
+		isolationLevel.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
+			public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
+
+				if (isolationLevel.getSelectedToggle() ==  readCommitedRButon) {
+					System.out.println("Set to Read Committed");
+					QueryHandler.getInstance().setIsolationLevel(Connection.TRANSACTION_READ_COMMITTED);
+				} else if(isolationLevel.getSelectedToggle() ==  readUncommitedRButton) {
+					System.out.println("Now set to Read Uncommitted");
+					QueryHandler.getInstance().setIsolationLevel(Connection.TRANSACTION_READ_UNCOMMITTED);
+				} else if(isolationLevel.getSelectedToggle() ==  repeatableReadRBUtton) {
+					System.out.println("Now set to Repeatable Read");
+					QueryHandler.getInstance().setIsolationLevel(Connection.TRANSACTION_REPEATABLE_READ);
+				} else if(isolationLevel.getSelectedToggle() ==  serializableRButton) {
+					System.out.println("Now set to Serializable");
+					QueryHandler.getInstance().setIsolationLevel(Connection.TRANSACTION_SERIALIZABLE);
+
+				}
+
+			}
+		});
+
 	}
-	public void addTransaction(String query){
+	public void addTransaction(String query, String type, List<Integer> columns){
 		String temp = null;
 		Exception e = null;
 		try{
@@ -64,21 +88,34 @@ public class MainController {
 		tran.setId(Integer.parseInt(temp));
 		 tran.setName(temp);
 		 tran.setQuery(query);
+		tran.setQueryType(type);
+		for(int i: columns)
+			tran.addColumnToLock(i);
 		 transactions.add(tran);
-		this.transactionsList.getItems().addAll("ID: " + temp + "Transaction:  " + query);
+		System.out.println(tran.getId() + " / " + tran.getName() + " / " + tran.getQueries());
+		this.transactionsList.getItems().addAll("ID: " + temp + "; Transaction:  " + query);
 
 		QueryHandler.getInstance().addTransaction(temp, Container.getInstance().getDatabaseName());
 		
 	}
 
 	public void handleLocalExecution() {
+		DBConnection.getInstance();
 		SoftwareNotification.notifySuccess("Successfully clicked Local button.");
 		for (Transaction t : transactions) {
 			QueryHandler.getInstance().commitTransaction(t.getId() + "");
 		}
 
 		for (Transaction t : transactions) {
+			if(t.getQueryType().equals("read")){
+				for(int i : t.getLockedColumns())
+					LockManager.getInstance().readLock(i, t.getName());
+			}else if(t.getQueryType().equals("write")){
+				for(int i : t.getLockedColumns())
+					LockManager.getInstance().writeLock(i, t.getName());
+			}
 			ResultSet rs = QueryHandler.getInstance().readQuery(t.getId() + "", t.getQueries());
+			LockManager.getInstance().unLock(t.getName());
 			System.out.println("MainController.java: Executing Transaction ID " + t.getId());
 			try {
 				FXMLLoader loader = new FXMLLoader(getClass()
@@ -89,7 +126,13 @@ public class MainController {
 				Parent root = loader.load();
 				ResultsWindowController controller =
 						loader.getController();
+				System.out.println("IS IT NULL??? " + controller);
 				controller.initializeData(rs);
+				
+				
+				
+				
+				
 				Stage stage = new Stage();
 				stage.setScene(new Scene(root));
 				stage.setTitle("Query List");
@@ -101,6 +144,27 @@ public class MainController {
 	}
 
 	public void handleGlobalExecution() {
+		sender man = new sender();
+		String query ="select (CASE WHEN croptype=1 THEN 'SUGAR CANE'"+
+        "WHEN croptype=2 THEN 'PALAY'"+
+        "WHEN croptype=3 THEN 'CORN'"+
+        "WHEN croptype=4 THEN 'COFFEE'"+
+        "ELSE 'OTHER'"+
+		 "END) crop_name, count(hh.id)"+
+		 "from hpq_hh hh "+
+		 "inner join hpq_crop crop"+
+		 " on(crop.hpq_hh_id = hh.id)"+
+		 "where croptype is not null "+
+		 "group by crop.croptype";
+		
+		man.send("DATA ~ "+man.resultData(query));
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		man.DoQuery(query);
 		SoftwareNotification.notifySuccess("Successfully clicked Global button.");
 	}
 	

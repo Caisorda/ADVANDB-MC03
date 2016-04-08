@@ -1,6 +1,8 @@
 package mc03;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -23,7 +25,10 @@ public class Main extends Application{
     private Stage primaryStage;
     private AnchorPane root;
     final private ExecutorService executorService = Executors.newSingleThreadExecutor();
-	        
+
+    List<String> queryList = new ArrayList();
+    String[] columnName;
+    int numColumns;
 //Thread catcher = new Thread(new reciever(Constants.PORT_SERVER, 1024, 1024));
 
 public void start(Stage primaryStage) throws Exception{
@@ -48,9 +53,11 @@ primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 	}
 });
 primaryStage.show();	             
+ List<String> queryList = new ArrayList();
 
+CommunicationHandler comhandler = new CommunicationHandler();
+ 
 
-//CommunicationHandler comhandler = new CommunicationHandler();
 
 //sender man = new sender();
 //catcher.start();
