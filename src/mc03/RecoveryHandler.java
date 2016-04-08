@@ -21,7 +21,7 @@ public class RecoveryHandler {
 	private RecoveryHandler(){
 		handler = QueryHandler.getInstance();
 		manager = LockManager.getInstance();
-		reqHandler = new NodeRequestHandler(/*node's schema*/);
+		reqHandler = new NodeRequestHandler("Marinduque");
 	}
 	
 	public static RecoveryHandler getInstance(){

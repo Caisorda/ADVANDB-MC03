@@ -23,6 +23,8 @@ import javafx.stage.Stage;
 import mc03.Constants;
 import mc03.Main;
 import mc03.QueryHandler;
+import mc03.reciever;
+import mc03.sender;
 import mc03.model.Container;
 import mc03.model.DBConnection;
 import mc03.model.Transaction;
@@ -95,6 +97,11 @@ public class MainController {
 						loader.getController();
 				System.out.println("IS IT NULL??? " + controller);
 				controller.initializeData(rs);
+				
+				
+				
+				
+				
 				Stage stage = new Stage();
 				stage.setScene(new Scene(root));
 				stage.setTitle("Query List");
@@ -106,6 +113,27 @@ public class MainController {
 	}
 
 	public void handleGlobalExecution() {
+		sender man = new sender();
+		String query ="select (CASE WHEN croptype=1 THEN 'SUGAR CANE'"+
+        "WHEN croptype=2 THEN 'PALAY'"+
+        "WHEN croptype=3 THEN 'CORN'"+
+        "WHEN croptype=4 THEN 'COFFEE'"+
+        "ELSE 'OTHER'"+
+		 "END) crop_name, count(hh.id)"+
+		 "from hpq_hh hh "+
+		 "inner join hpq_crop crop"+
+		 " on(crop.hpq_hh_id = hh.id)"+
+		 "where croptype is not null "+
+		 "group by crop.croptype";
+		
+		man.send("DATA ~ "+man.resultData(query));
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		man.DoQuery(query);
 		SoftwareNotification.notifySuccess("Successfully clicked Global button.");
 	}
 	

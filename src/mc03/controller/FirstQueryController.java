@@ -33,13 +33,13 @@ public class FirstQueryController {
 	 this.str=str;
 	 checker =0;
 	 this.qlc=qlc;
-	 
+	 //sugarCaneButton.setVisible(true);
 	 cropTypePane.setVisible(false);
 	 group.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
 		    public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
-		    	if(checker ==1){
+		    	
 		    	if (group.getSelectedToggle() !=  null) {
-		    		 cropTypePane.setVisible(true);
+		    		 cropTypePane.setVisible(true);if(checker ==1){
 		         }}
 		         if (group.getSelectedToggle() ==  municipalityButton) {
 		             System.out.println("municipalityButton is clicked...");
@@ -93,32 +93,32 @@ stage.close();
 	 if (str == "Crop Volume"){
 		 System.out.println("query is relted to crop volume.");
 		 
-		query = "select hh."+selected+", sum(crop.crop_vol) as volume" +
-		"from hpq_hh hh"+
-		" inner join hpq_crop crop"+
-		" on(crop.hpq_hh_id = hh.id)"+
+		query = "select hh."+selected+", sum(crop.crop_vol) as volume " +
+		"from hpq_hh hh "+
+		" inner join hpq_crop crop "+
+		" on(crop.hpq_hh_id = hh.id) "+
 		" where croptype ="+crop+
 		" group by hh."+selected;
-
+		 cropTypePane.setVisible(true);
 		 checker=1;
 	 }
 	 else if(str =="Crop per Household"){
 		 System.out.println("query is relted to crop per household..");
 		 
-		 query = " select hh."+selected+", count(hh.id) as count"+
-				 "from hpq_hh hh"+
-				 "inner join hpq_crop crop"+
-				 "on(crop.hpq_hh_id = hh.id)"+
-				 "where croptype ="+crop+
+		 query = " select hh."+selected+", count(hh.id) as count "+
+				 "from hpq_hh hh "+
+				 "inner join hpq_crop crop "+
+				 "on(crop.hpq_hh_id = hh.id) "+
+				 "where croptype = "+crop+
 				 " group by hh."+selected;
-		 
+		 cropTypePane.setVisible(true);
 		 checker =1;
 
 	 }
 	 else if(str  == "Households that have Insurance"){
 		 System.out.println("query is relted to households that have insurance..");
 		 
-		 query = "select hh."+selected+", count(hh.id) as count"+
+		 query = "select hh."+selected+", count(hh.id) as count  "+
 				" from hpq_hh hh"+
 				" where irfa_crop = 2"+
 				 " group by hh."+selected;
@@ -127,17 +127,17 @@ stage.close();
 	 else if(str =="total income of households that have Insurance"){
 		 System.out.println("query is relted to total income per households.");
 		 
-		 query = "select hh."+selected+", sum(totin) as income"+
-				 "from hpq_hh hh"+
-				 "where irfa_crop = 2"+
+		 query = "select hh."+selected+", sum(totin) as income "+
+				 "from hpq_hh hh "+
+				 "where irfa_crop = 2 "+
 				 "group by hh."+selected;
 
 	 }
 	 else if (str == "Total farmland"){
 		 System.out.println("query is relted tototal fram land..");
 		 
-		 query = "	select "+selected+"	, sum(nalp) as landarea"+
-				" from hpq_hh hh"+
+		 query = "	select "+selected+"	, sum(nalp) as landarea "+
+				" from hpq_hh hh "+
 				 "group by hh."+selected;
 
 	 }

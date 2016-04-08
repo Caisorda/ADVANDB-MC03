@@ -31,13 +31,17 @@ import javax.swing.table.DefaultTableModel;
  * @author miguel
  */
 public class sender {
-    
+    String address="localhost";
     public sender(){
     
+    	
     }
     
 
-    
+    public void setadress(String adrez){
+    	address = adrez;
+    	
+    }
     
     public void send(String patatas){
         try {
@@ -47,7 +51,7 @@ public class sender {
             System.out.println("SENDING"+patatas);
             
             DatagramSocket clientSocket = new DatagramSocket();
-            String address = "localhost";
+            
            //address="10.100.217.172";
             InetAddress IPAddress = InetAddress.getByName(address);
 
@@ -191,7 +195,7 @@ public String resultData(String query){
     ResultSetMetaData rsmetadata = rs.getMetaData();
     int columns = rsmetadata.getColumnCount();
 
-    qData=""+ columns+" ~ ";
+    qData=""+ columns+" / ";
 
     for (int i = 1; i < columns + 1; i++) {
         qData=qData+rsmetadata.getColumnName(i)+" : ";

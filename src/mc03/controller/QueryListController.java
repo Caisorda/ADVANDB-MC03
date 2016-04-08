@@ -171,15 +171,15 @@ public class QueryListController implements Initializable {
 	 }
 	 public void handlenumHouseholdsCropType(){
 		 addList("number of households that produce each crop type.");
-		 String query ="select (CASE WHEN croptype=1 THEN 'SUGAR CANE'"+
-			        "WHEN croptype=2 THEN 'PALAY'"+
-			        "WHEN croptype=3 THEN 'CORN'"+
-			        "WHEN croptype=4 THEN 'COFFEE'"+
-			        "ELSE 'OTHER'"+
-					 "END) crop_name, count(hh.id)"+
+		 String query ="select (CASE WHEN croptype=1 THEN 'SUGAR CANE' "+
+			        "WHEN croptype=2 THEN 'PALAY' "+
+			        "WHEN croptype=3 THEN 'CORN' "+
+			        "WHEN croptype=4 THEN 'COFFEE' "+
+			        "ELSE 'OTHER' "+
+					 "END) crop_name, count(hh.id) "+
 					 "from hpq_hh hh "+
-					 "inner join hpq_crop crop"+
-					 " on(crop.hpq_hh_id = hh.id)"+
+					 "inner join hpq_crop crop "+
+					 " on(crop.hpq_hh_id = hh.id) "+
 					 " where croptype is not null "+
 					 "group by crop.croptype";
 		 
@@ -187,13 +187,13 @@ public class QueryListController implements Initializable {
 	 }
 	 public void handlecropVolumeCropType(){
 		 addList("Crop volume per crop type.");
-		 String query = "select (CASE WHEN croptype=1 THEN 'SUGAR CANE'"+
-                 		"WHEN croptype=2 THEN 'PALAY'"+
-                 		"WHEN croptype=3 THEN 'CORN'"+
-                 		"WHEN croptype=4 THEN 'COFFEE'"+
-                 		"END) crop_name, sum(crop_vol)"+
-						"from hpq_crop crop"+
-						"where croptype is not null"+
+		 String query = "select (CASE WHEN croptype=1 THEN 'SUGAR CANE' "+
+                 		"WHEN croptype=2 THEN 'PALAY' "+
+                 		"WHEN croptype=3 THEN 'CORN' "+
+                 		"WHEN croptype=4 THEN 'COFFEE' "+
+                 		"END) crop_name, sum(crop_vol) "+
+						"from hpq_crop crop "+
+						"where croptype is not null "+
 						"group by crop.croptype";
 
 
