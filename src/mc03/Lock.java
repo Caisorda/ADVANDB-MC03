@@ -5,11 +5,9 @@ public class Lock {
 	private boolean isWriting;
 	private int numReaders;
 	private ArrayList<String> transactions;
-	private LockManager manager;
 	
 	public Lock(){
 		this.transactions = new ArrayList();
-		manager = manager.getInstance();
 	}
 	
 	public synchronized void writeLock(String transID){

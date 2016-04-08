@@ -1,4 +1,6 @@
 package mc03;
+import mc03.model.Container;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -21,7 +23,8 @@ public class RecoveryHandler {
 	private RecoveryHandler(){
 		handler = QueryHandler.getInstance();
 		manager = LockManager.getInstance();
-		reqHandler = new NodeRequestHandler("Marinduque");
+
+		reqHandler = new NodeRequestHandler(Container.getInstance().getDatabaseName());
 	}
 	
 	public static RecoveryHandler getInstance(){

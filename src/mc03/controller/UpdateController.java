@@ -48,8 +48,8 @@ public class UpdateController {
 	}
 	
 	public void handleUpdate(){
-		qlc.addQuery("...");
-		this.qlc.addList("...");
+//		qlc.addQuery("...");
+//		this.qlc.addList("...");
 		System.out.println("handle update button has been clicked.");
 		Stage stage = (Stage) updateQueryButton.getScene().getWindow();
 		stage.close();
